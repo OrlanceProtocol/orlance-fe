@@ -14,14 +14,14 @@ export default function DepositWithdrawForm({ pool }: { pool: Pool }) {
   const balance = selectedToken === "ETH" ? pool.ethAmount : pool.stEthAmount;
 
   return (
-    <div className="bg-white rounded-md border border-gray-200 shadow-sm p-6 h-full">
+    <div className="bg-white rounded-xl border-2 border-gray-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6 h-full">
       {/* Tabs */}
-      <div className="flex gap-8 border-b border-gray-200 mb-6">
+      <div className="flex justify-center border-b border-gray-200 mb-6">
         <button
           onClick={() => setActiveTab("deposit")}
-          className={`pb-3 text-lg font-medium transition-colors cursor-pointer ${
+          className={`px-8 pb-3 text-2xl font-bold text-center transition-colors cursor-pointer ${
             activeTab === "deposit"
-              ? "text-gray-900 border-b-2 border-gray-900"
+              ? "text-gray-900 border-b-3 border-orange-500 -mb-[1px]"
               : "text-gray-400 hover:text-gray-600"
           }`}
         >
@@ -29,9 +29,9 @@ export default function DepositWithdrawForm({ pool }: { pool: Pool }) {
         </button>
         <button
           onClick={() => setActiveTab("withdraw")}
-          className={`pb-3 text-lg font-medium transition-colors cursor-pointer ${
+          className={`px-8 pb-3 text-2xl font-bold text-center transition-colors cursor-pointer ${
             activeTab === "withdraw"
-              ? "text-gray-900 border-b-2 border-gray-900"
+              ? "text-gray-900 border-b-3 border-orange-500 -mb-[1px]"
               : "text-gray-400 hover:text-gray-600"
           }`}
         >
@@ -42,13 +42,15 @@ export default function DepositWithdrawForm({ pool }: { pool: Pool }) {
       {/* From section */}
       <div className="mb-6">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">From</h3>
-        <TokenInput
-          selectedToken={selectedToken}
-          onSelectToken={setSelectedToken}
-          amount={amount}
-          onAmountChange={setAmount}
-          balance={balance}
-        />
+        <div className="rounded-xl border-2 border-gray-900 p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <TokenInput
+            selectedToken={selectedToken}
+            onSelectToken={setSelectedToken}
+            amount={amount}
+            onAmountChange={setAmount}
+            balance={balance}
+          />
+        </div>
       </div>
 
       {/* To separator */}
@@ -78,7 +80,7 @@ export default function DepositWithdrawForm({ pool }: { pool: Pool }) {
       </div>
 
       {/* Execute button */}
-      <button className="w-full py-3 bg-gray-800 hover:bg-gray-900 text-white text-base font-medium rounded-md transition-colors cursor-pointer">
+      <button className="w-full py-3 bg-white hover:bg-gray-50 text-gray-900 text-base font-semibold rounded-xl border-2 border-gray-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-colors cursor-pointer">
         Execute
       </button>
     </div>

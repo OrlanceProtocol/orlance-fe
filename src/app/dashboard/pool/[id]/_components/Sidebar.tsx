@@ -9,14 +9,14 @@ export default function Sidebar({ pool }: { pool: Pool }) {
   const [activeTab, setActiveTab] = useState<"balance" | "transactions">("balance");
 
   return (
-    <div className="flex flex-col gap-6 h-full">
+    <div className="bg-white rounded-xl border-2 border-gray-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6 h-full flex flex-col">
       {/* Tabs */}
-      <div className="flex gap-6 border-b-2 border-gray-900">
+      <div className="flex border-b border-gray-200 mb-6">
         <button
           onClick={() => setActiveTab("balance")}
-          className={`pb-3 text-base font-medium transition-colors cursor-pointer ${
+          className={`flex-1 pb-3 text-lg font-semibold text-center transition-colors cursor-pointer ${
             activeTab === "balance"
-              ? "text-gray-900 border-b-2 border-orange-500 -mb-[2px]"
+              ? "text-gray-900 border-b-3 border-orange-500 -mb-[1px]"
               : "text-gray-400 hover:text-gray-600"
           }`}
         >
@@ -24,9 +24,9 @@ export default function Sidebar({ pool }: { pool: Pool }) {
         </button>
         <button
           onClick={() => setActiveTab("transactions")}
-          className={`pb-3 text-base font-medium transition-colors cursor-pointer ${
+          className={`flex-1 pb-3 text-lg font-semibold text-center transition-colors cursor-pointer ${
             activeTab === "transactions"
-              ? "text-gray-900 border-b-2 border-orange-500 -mb-[2px]"
+              ? "text-gray-900 border-b-3 border-orange-500 -mb-[1px]"
               : "text-gray-400 hover:text-gray-600"
           }`}
         >
@@ -35,9 +35,9 @@ export default function Sidebar({ pool }: { pool: Pool }) {
       </div>
 
       {activeTab === "balance" ? (
-        <>
+        <div className="flex flex-col gap-6 flex-1">
           {/* Available section */}
-          <div className="bg-white rounded-md border border-gray-200 shadow-sm p-5">
+          <div className="rounded-xl border-2 border-gray-900 p-5 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Available</h3>
             <div className="space-y-3">
               <div className="flex items-center justify-between">
@@ -61,7 +61,7 @@ export default function Sidebar({ pool }: { pool: Pool }) {
           </div>
 
           {/* Current Position section */}
-          <div className="bg-white rounded-md border border-gray-200 shadow-sm p-5 flex-1">
+          <div className="rounded-xl border-2 border-gray-900 p-5 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] flex-1 flex flex-col">
             <h3 className="text-lg font-semibold text-gray-900 mb-1">Current position</h3>
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm text-gray-500">Value</span>
@@ -71,7 +71,7 @@ export default function Sidebar({ pool }: { pool: Pool }) {
             <PositionChart principals={pool.principalTokens} yields={pool.yieldTokens} />
 
             {/* Legend */}
-            <div className="space-y-2 mt-4">
+            <div className="space-y-2 mt-auto">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <span className="w-3 h-3 rounded-full bg-orange-500" />
@@ -92,9 +92,9 @@ export default function Sidebar({ pool }: { pool: Pool }) {
               </div>
             </div>
           </div>
-        </>
+        </div>
       ) : (
-        <div className="bg-white rounded-md border border-gray-200 shadow-sm p-5 flex-1 flex items-center justify-center">
+        <div className="flex-1 flex items-center justify-center">
           <span className="text-gray-400 text-base">No transactions yet</span>
         </div>
       )}

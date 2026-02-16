@@ -16,19 +16,19 @@ export default function YieldStrategyCard({
 }: YieldStrategyCardProps) {
   return (
     <div className="flex flex-col">
-      <span className="text-sm text-gray-500 mb-2 flex items-center gap-1">
+      <span className="text-base font-semibold text-gray-900 mb-2 flex items-center gap-1">
         {sublabel}
-        <svg width="14" height="14" viewBox="0 0 14 14" className="text-gray-400">
-          <circle cx="7" cy="7" r="6" stroke="currentColor" strokeWidth="1.2" fill="none" />
-          <text x="7" y="10" textAnchor="middle" fontSize="8" fill="currentColor">i</text>
+        <svg width="16" height="16" viewBox="0 0 16 16" className="text-gray-900">
+          <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.5" fill="none" />
+          <text x="8" y="11.5" textAnchor="middle" fontSize="10" fontWeight="bold" fill="currentColor">i</text>
         </svg>
       </span>
       <button
         onClick={onSelect}
-        className={`flex-1 flex flex-col justify-between p-5 rounded-md border-2 transition-colors cursor-pointer ${
+        className={`flex-1 flex flex-col justify-between p-5 rounded-xl border-2 border-gray-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-colors cursor-pointer ${
           selected
-            ? "border-orange-400 bg-orange-50/30"
-            : "border-gray-200 bg-white hover:border-gray-300"
+            ? "bg-orange-50/30"
+            : "bg-white hover:bg-gray-50"
         }`}
       >
         <div className="flex items-center justify-between">

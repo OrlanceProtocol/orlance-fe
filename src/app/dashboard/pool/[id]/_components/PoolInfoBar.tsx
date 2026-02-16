@@ -4,7 +4,7 @@ import type { Pool } from "@/data/pools";
 
 export default function PoolInfoBar({ pool }: { pool: Pool }) {
   return (
-    <div className="flex items-center justify-between bg-white rounded-md border border-gray-200 px-6 py-4 shadow-sm">
+    <div className="flex items-center justify-between bg-white rounded-xl border-2 border-gray-900 px-6 py-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
       <div className="flex items-center gap-4">
         <Link href="/dashboard" className="text-gray-400 hover:text-gray-700 transition-colors">
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2">
