@@ -14,7 +14,7 @@ export default function DepositWithdrawForm({ pool }: { pool: Pool }) {
   const balance = selectedToken === "ETH" ? pool.ethAmount : pool.stEthAmount;
 
   return (
-    <div className="bg-white rounded-xl border-2 border-gray-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6 h-full">
+    <div className="bg-white rounded-xl border border-gray-200 p-6 h-full">
       {/* Tabs */}
       <div className="flex justify-center border-b border-gray-200 mb-6">
         <button

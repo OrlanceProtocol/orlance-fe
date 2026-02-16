@@ -9,7 +9,7 @@ export default function Sidebar({ pool }: { pool: Pool }) {
   const [activeTab, setActiveTab] = useState<"balance" | "transactions">("balance");
 
   return (
-    <div className="bg-white rounded-xl border-2 border-gray-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6 h-full flex flex-col">
+    <div className="bg-white rounded-xl border border-gray-200 p-6 h-full flex flex-col">
       {/* Tabs */}
       <div className="flex border-b border-gray-200 mb-6">
         <button
