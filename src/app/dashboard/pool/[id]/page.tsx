@@ -1,8 +1,7 @@
 import { getPoolById } from "@/data/pools";
 import { notFound } from "next/navigation";
 import Header from "../../_components/Header";
-import PoolInfoBar from "./_components/PoolInfoBar";
-import DepositWithdrawForm from "./_components/DepositWithdrawForm";
+import PoolContent from "./_components/PoolContent";
 import Sidebar from "./_components/Sidebar";
 
 
@@ -20,9 +19,8 @@ export default async function ManagePoolPage({ params }: Props) {
       <main className="mx-auto px-30 py-10 flex flex-col min-h-screen">
         <Header />
         <div className="grid grid-cols-5 gap-6 mt-6 flex-1">
-          <div className="col-span-3 flex flex-col gap-6">
-            <PoolInfoBar pool={pool} />
-            <DepositWithdrawForm pool={pool} />
+          <div className="col-span-3">
+            <PoolContent pool={pool} />
           </div>
           <div className="col-span-2">
             <Sidebar pool={pool} />

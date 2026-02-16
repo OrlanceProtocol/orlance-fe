@@ -13,6 +13,7 @@ export interface Pool {
   isHighAPR?: boolean;
   principalTokens: number;
   yieldTokens: number;
+  lpTokens: number;
   principalStaked: number;
   yieldStaked: number;
   positionValueUSD: string;
@@ -34,6 +35,7 @@ export const pools: Pool[] = [
     isHighAPR: true,
     principalTokens: 0,
     yieldTokens: 0,
+    lpTokens: 0,
     principalStaked: 0,
     yieldStaked: 0,
     positionValueUSD: "$0",
@@ -52,6 +54,7 @@ export const pools: Pool[] = [
     stEthAmount: 4.73,
     principalTokens: 0,
     yieldTokens: 0,
+    lpTokens: 0,
     principalStaked: 0,
     yieldStaked: 0,
     positionValueUSD: "$0",
@@ -68,8 +71,9 @@ export const pools: Pool[] = [
     balance: "$80.64k",
     ethAmount: 6.49,
     stEthAmount: 10.5,
-    principalTokens: 19.963,
-    yieldTokens: 42.3063,
+    principalTokens: 19.3581,
+    yieldTokens: 3.6428,
+    lpTokens: 3.6243,
     principalStaked: 1.6608,
     yieldStaked: 38.6634,
     positionValueUSD: "$80,734.62",
