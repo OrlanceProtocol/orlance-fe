@@ -25,10 +25,10 @@ export default function YieldStrategyCard({
       </span>
       <button
         onClick={onSelect}
-        className={`flex-1 flex flex-col justify-between p-5 rounded-xl border-2 border-gray-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-colors cursor-pointer ${
+        className={`flex-1 flex flex-col justify-between p-5 rounded-xl border transition-colors cursor-pointer ${
           selected
-            ? "bg-orange-50/30"
-            : "bg-white hover:bg-gray-50"
+            ? "bg-orange-50/30 border-orange-300 shadow-md"
+            : "bg-white border-gray-200 shadow-sm hover:shadow-md hover:border-gray-300"
         }`}
       >
         <div className="flex items-center justify-between">

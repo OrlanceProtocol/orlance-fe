@@ -5,6 +5,7 @@ import PoolInfoBar from "./_components/PoolInfoBar";
 import DepositWithdrawForm from "./_components/DepositWithdrawForm";
 import Sidebar from "./_components/Sidebar";
 
+
 interface Props {
   params: Promise<{ id: string }>;
 }

@@ -37,7 +37,7 @@ export default function Sidebar({ pool }: { pool: Pool }) {
       {activeTab === "balance" ? (
         <div className="flex flex-col gap-6 flex-1">
           {/* Available section */}
-          <div className="rounded-xl border-2 border-gray-900 p-5 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+          <div className="rounded-xl border border-gray-200 p-5 shadow-sm">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Available</h3>
             <div className="space-y-3">
               <div className="flex items-center justify-between">
@@ -61,7 +61,7 @@ export default function Sidebar({ pool }: { pool: Pool }) {
           </div>
 
           {/* Current Position section */}
-          <div className="rounded-xl border-2 border-gray-900 p-5 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] flex-1 flex flex-col">
+          <div className="rounded-xl border border-gray-200 p-5 shadow-sm flex-1 flex flex-col">
             <h3 className="text-lg font-semibold text-gray-900 mb-1">Current position</h3>
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm text-gray-500">Value</span>
