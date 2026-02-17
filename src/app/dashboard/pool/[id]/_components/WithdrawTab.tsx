@@ -37,13 +37,13 @@ export default function WithdrawTab({ pool }: { pool: Pool }) {
         <SectionHeader title="From" withDivider />
 
         {/* Principals */}
-        <div className="rounded-xl border border-gray-200 p-4 shadow-sm">
+        <div className="rounded-xl border border-gray-700/30 p-4 bg-[#151f2e]">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-base font-semibold text-gray-900">
+              <p className="text-base font-semibold text-white">
                 Principals
               </p>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-gray-400">
                 Balance {pool.principalTokens} Principals
               </p>
             </div>
@@ -57,11 +57,11 @@ export default function WithdrawTab({ pool }: { pool: Pool }) {
         <PlusConnector />
 
         {/* Yields */}
-        <div className="rounded-xl border border-gray-200 p-4 shadow-sm">
+        <div className="rounded-xl border border-gray-700/30 p-4 bg-[#151f2e]">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-base font-semibold text-gray-900">Yields</p>
-              <p className="text-sm text-gray-500">
+              <p className="text-base font-semibold text-white">Yields</p>
+              <p className="text-sm text-gray-400">
                 Balance {pool.yieldTokens} Yields
               </p>
             </div>
@@ -75,11 +75,11 @@ export default function WithdrawTab({ pool }: { pool: Pool }) {
         <PlusConnector />
 
         {/* LP Tokens */}
-        <div className="rounded-xl border border-gray-200 p-4 shadow-sm">
+        <div className="rounded-xl border border-gray-700/30 p-4 bg-[#151f2e]">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-base font-semibold text-gray-900">LP Tokens</p>
-              <p className="text-sm text-gray-500">
+              <p className="text-base font-semibold text-white">LP Tokens</p>
+              <p className="text-sm text-gray-400">
                 Balance {pool.lpTokens} LP Tokens
               </p>
             </div>
@@ -94,10 +94,10 @@ export default function WithdrawTab({ pool }: { pool: Pool }) {
       {/* To section */}
       <div className="mb-8">
         <SectionHeader title="To" withDivider />
-        <div className="rounded-xl border border-gray-200 p-4 shadow-sm">
+        <div className="rounded-xl border border-gray-700/30 p-4 bg-[#151f2e]">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-500">Token</span>
+              <span className="text-sm text-gray-400">Token</span>
               <TokenSelector
                 token={withdrawToken}
                 onToggle={() =>
@@ -106,10 +106,10 @@ export default function WithdrawTab({ pool }: { pool: Pool }) {
               />
             </div>
             <div className="text-right">
-              <p className="text-sm font-medium text-gray-900">
+              <p className="text-sm font-medium text-white">
                 Estimate: {totalWithdrawTokens.toFixed(4)} {withdrawToken}
               </p>
-              <p className="text-xs text-gray-400">
+              <p className="text-xs text-gray-500">
                 ~${Number(estimateUSD).toLocaleString()}
               </p>
             </div>

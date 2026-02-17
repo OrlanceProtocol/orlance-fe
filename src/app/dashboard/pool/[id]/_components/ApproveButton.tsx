@@ -7,14 +7,14 @@ export default function ApproveButton({
 }) {
   if (approved) {
     return (
-      <span className="text-sm font-medium text-gray-500">Approved</span>
+      <span className="text-sm font-medium text-gray-400">Approved</span>
     );
   }
 
   return (
     <button
       onClick={onApprove}
-      className="px-4 py-1.5 bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium rounded-lg transition-colors cursor-pointer"
+      className="px-4 py-1.5 bg-teal-500 hover:bg-teal-600 text-white text-sm font-medium rounded-lg transition-colors cursor-pointer"
     >
       Approve
     </button>

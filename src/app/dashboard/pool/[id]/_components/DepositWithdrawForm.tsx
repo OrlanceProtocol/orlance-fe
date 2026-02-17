@@ -23,17 +23,17 @@ export default function DepositWithdrawForm({
 
   if (advanced) {
     return (
-      <div className="bg-white rounded-xl border border-gray-200 p-6 h-full">
+      <div className="bg-[#111827]/80 rounded-xl border border-gray-700/30 p-6 h-full backdrop-blur-sm">
         {/* Advanced Tabs */}
-        <div className="flex justify-center border-b border-gray-200 mb-6">
+        <div className="flex justify-center border-b border-gray-700/30 mb-6">
           {(["mint", "swap", "pool", "redeem"] as AdvancedTab[]).map((tab) => (
             <button
               key={tab}
               onClick={() => setAdvancedTab(tab)}
               className={`px-6 pb-3 text-lg font-semibold text-center transition-colors cursor-pointer capitalize ${
                 advancedTab === tab
-                  ? "text-gray-900 border-b-3 border-orange-500 -mb-[1px]"
-                  : "text-gray-400 hover:text-gray-600"
+                  ? "text-white border-b-3 border-teal-500 -mb-[1px]"
+                  : "text-gray-500 hover:text-gray-300"
               }`}
             >
               {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -50,15 +50,15 @@ export default function DepositWithdrawForm({
   }
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-6 h-full">
+    <div className="bg-[#111827]/80 rounded-xl border border-gray-700/30 p-6 h-full backdrop-blur-sm">
       {/* Tabs */}
-      <div className="flex justify-center border-b border-gray-200 mb-6">
+      <div className="flex justify-center border-b border-gray-700/30 mb-6">
         <button
           onClick={() => setActiveTab("deposit")}
           className={`px-8 pb-3 text-2xl font-bold text-center transition-colors cursor-pointer ${
             activeTab === "deposit"
-              ? "text-gray-900 border-b-3 border-orange-500 -mb-[1px]"
-              : "text-gray-400 hover:text-gray-600"
+              ? "text-white border-b-3 border-teal-500 -mb-[1px]"
+              : "text-gray-500 hover:text-gray-300"
           }`}
         >
           Deposit
@@ -67,8 +67,8 @@ export default function DepositWithdrawForm({
           onClick={() => setActiveTab("withdraw")}
           className={`px-8 pb-3 text-2xl font-bold text-center transition-colors cursor-pointer ${
             activeTab === "withdraw"
-              ? "text-gray-900 border-b-3 border-orange-500 -mb-[1px]"
-              : "text-gray-400 hover:text-gray-600"
+              ? "text-white border-b-3 border-teal-500 -mb-[1px]"
+              : "text-gray-500 hover:text-gray-300"
           }`}
         >
           Withdraw

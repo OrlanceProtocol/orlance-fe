@@ -12,9 +12,9 @@ export default function PositionChart({ principals, yields }: PositionChartProps
     return (
       <div className="flex flex-col items-center justify-center flex-1 py-8">
         <svg width="200" height="200" viewBox="0 0 160 160">
-          <circle cx="80" cy="80" r={radius} fill="none" stroke="#e5e7eb" strokeWidth="20" />
+          <circle cx="80" cy="80" r={radius} fill="none" stroke="#374151" strokeWidth="20" />
         </svg>
-        <span className="text-sm text-gray-400 mt-2">No position</span>
+        <span className="text-sm text-gray-500 mt-2">No position</span>
       </div>
     );
   }

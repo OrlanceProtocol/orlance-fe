@@ -15,7 +15,7 @@ export default function MintTab({ pool }: { pool: Pool }) {
       {/* From section */}
       <div className="mb-6">
         <SectionHeader title="From" />
-        <div className="rounded-xl border border-gray-200 p-5 shadow-sm">
+        <div className="rounded-xl border border-gray-700/30 p-5 bg-[#151f2e]">
           <TokenInput
             selectedToken={selectedToken}
             onSelectToken={setSelectedToken}
@@ -29,24 +29,24 @@ export default function MintTab({ pool }: { pool: Pool }) {
       {/* To section */}
       <div className="mb-8">
         <SectionHeader title="To" withDivider />
-        <div className="rounded-xl border border-gray-200 p-5 shadow-sm">
+        <div className="rounded-xl border border-gray-700/30 p-5 bg-[#151f2e]">
           <div className="flex items-center">
             {/* Principals */}
             <div className="flex-1">
-              <p className="text-base font-semibold text-gray-900">
+              <p className="text-base font-semibold text-white">
                 Principals
               </p>
-              <p className="text-sm text-gray-400">est. Principals</p>
+              <p className="text-sm text-gray-500">est. Principals</p>
             </div>
 
             {/* Plus connector */}
             <div className="mx-4">
-              <div className="w-8 h-8 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-full bg-[#1a2332] border border-gray-700/30 flex items-center justify-center">
                 <svg
                   width="14"
                   height="14"
                   viewBox="0 0 14 14"
-                  className="text-gray-500"
+                  className="text-gray-400"
                 >
                   <path
                     d="M7 2V12M2 7H12"
@@ -60,8 +60,8 @@ export default function MintTab({ pool }: { pool: Pool }) {
 
             {/* Yields */}
             <div className="flex-1">
-              <p className="text-base font-semibold text-gray-900">Yields</p>
-              <p className="text-sm text-gray-400">est. Yields</p>
+              <p className="text-base font-semibold text-white">Yields</p>
+              <p className="text-sm text-gray-500">est. Yields</p>
             </div>
           </div>
         </div>

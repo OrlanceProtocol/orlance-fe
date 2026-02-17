@@ -20,7 +20,7 @@ export default function PercentageButtons({
 
   return (
     <div className="flex items-center gap-2">
-      <span className="text-sm text-gray-500 w-16 shrink-0">Amount</span>
+      <span className="text-sm text-gray-400 w-16 shrink-0">Amount</span>
       <input
         type="number"
         value={amount}
@@ -29,7 +29,7 @@ export default function PercentageButtons({
           onAmountChange(e.target.value);
         }}
         placeholder="0.00"
-        className="w-40 px-4 py-2 rounded-lg border border-gray-200 text-base text-gray-900 shadow-sm focus:outline-none focus:border-orange-400 focus:ring-1 focus:ring-orange-400"
+        className="w-40 px-4 py-2 rounded-lg border border-gray-700/30 bg-[#151f2e] text-base text-white shadow-sm focus:outline-none focus:border-teal-400 focus:ring-1 focus:ring-teal-400 placeholder-gray-500"
       />
       {PERCENTAGES.map((p) => (
         <button
@@ -40,8 +40,8 @@ export default function PercentageButtons({
           }}
           className={`px-3 py-2 text-sm rounded-lg border transition-colors cursor-pointer ${
             selectedPercent === p.value
-              ? "bg-gray-900 text-white border-gray-900"
-              : "border-gray-200 text-gray-600 shadow-sm hover:bg-orange-50 hover:border-orange-400 hover:text-orange-600"
+              ? "bg-teal-500 text-white border-teal-500"
+              : "border-gray-700/30 text-gray-400 hover:bg-teal-500/10 hover:border-teal-400 hover:text-teal-400"
           }`}
         >
           {p.label}

@@ -16,12 +16,12 @@ export default function PoolInfoBar({
   onToggleAdvanced,
 }: PoolInfoBarProps) {
   return (
-    <div className="bg-white rounded-xl border border-gray-200 px-6 py-4 space-y-3">
+    <div className="bg-[#111827]/80 rounded-xl border border-gray-700/30 px-6 py-4 space-y-3 backdrop-blur-sm">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Link
             href="/dashboard"
-            className="text-gray-400 hover:text-gray-700 transition-colors"
+            className="text-gray-400 hover:text-white transition-colors"
           >
             <svg
               width="20"
@@ -47,24 +47,24 @@ export default function PoolInfoBar({
             className="rounded-full"
           />
 
-          <span className="text-lg font-semibold text-gray-900">
+          <span className="text-lg font-semibold text-white">
             {pool.asset} via {pool.protocol}
           </span>
 
           <span className="text-base text-gray-500">-</span>
 
-          <span className="px-3 py-1 text-sm text-gray-600 bg-gray-100 rounded-md border border-gray-200">
+          <span className="px-3 py-1 text-sm text-gray-300 bg-[#1a2332] rounded-md border border-gray-700/30">
             Matures on {pool.maturity}
           </span>
         </div>
 
         <button
           onClick={onToggleAdvanced}
-          className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 transition-colors cursor-pointer"
+          className="flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors cursor-pointer"
         >
           <span
             className={`w-8 h-4 rounded-full relative transition-colors ${
-              advanced ? "bg-orange-500" : "bg-gray-200"
+              advanced ? "bg-teal-500" : "bg-gray-600"
             }`}
           >
             <span
@@ -78,8 +78,8 @@ export default function PoolInfoBar({
       </div>
 
       {advanced && (
-        <div className="flex items-center gap-4 text-sm text-gray-500 border-t border-gray-100 pt-3">
-          <span className="font-semibold text-gray-700">Fees:</span>
+        <div className="flex items-center gap-4 text-sm text-gray-400 border-t border-gray-700/30 pt-3">
+          <span className="font-semibold text-gray-300">Fees:</span>
           <span>Deposit 0%</span>
           <span>Redemption 0%</span>
           <span>Early Redemption 0%</span>

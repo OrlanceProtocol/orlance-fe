@@ -11,8 +11,8 @@ export default function ExecuteButton({
         disabled={!enabled}
         className={`w-full py-3 text-base font-semibold rounded-xl shadow-sm transition-colors cursor-pointer ${
           enabled
-            ? "bg-gray-900 hover:bg-gray-800 text-white"
-            : "bg-gray-200 text-gray-400 cursor-not-allowed"
+            ? "bg-teal-500 hover:bg-teal-600 text-white"
+            : "bg-gray-700/50 text-gray-500 cursor-not-allowed"
         }`}
       >
         Execute
@@ -26,8 +26,8 @@ export default function ExecuteButton({
         disabled={!enabled}
         className={`px-16 py-3 text-base font-semibold rounded-xl shadow-sm ${
           enabled
-            ? "bg-gray-900 hover:bg-gray-800 text-white cursor-pointer transition-colors"
-            : "bg-gray-200 text-gray-400 cursor-not-allowed"
+            ? "bg-teal-500 hover:bg-teal-600 text-white cursor-pointer transition-colors"
+            : "bg-gray-700/50 text-gray-500 cursor-not-allowed"
         }`}
       >
         Execute

@@ -10,7 +10,7 @@ export default function TokenSelector({
   return (
     <button
       onClick={onToggle}
-      className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-gray-200 bg-white shadow-sm hover:bg-gray-50 transition-colors cursor-pointer"
+      className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-gray-700/30 bg-[#1a2332] hover:bg-[#1e2a3a] transition-colors cursor-pointer"
     >
       <Image
         src="/icon/eth.png"
@@ -19,7 +19,7 @@ export default function TokenSelector({
         height={20}
         className="rounded-full"
       />
-      <span className="text-sm font-medium text-gray-900">{token}</span>
+      <span className="text-sm font-medium text-white">{token}</span>
       <svg
         width="12"
         height="12"

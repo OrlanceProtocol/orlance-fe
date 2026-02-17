@@ -21,11 +21,11 @@ export default function RedeemTab({ pool }: { pool: Pool }) {
       {/* From section */}
       <div className="mb-6">
         <SectionHeader title="From" withDivider />
-        <div className="rounded-xl border border-gray-200 p-5 shadow-sm space-y-4">
+        <div className="rounded-xl border border-gray-700/30 p-5 bg-[#151f2e] space-y-4">
           {/* Primitives header with balance */}
           <div className="flex items-center justify-between">
-            <p className="text-base font-semibold text-gray-900">Primitives</p>
-            <span className="text-sm text-gray-500">
+            <p className="text-base font-semibold text-white">Primitives</p>
+            <span className="text-sm text-gray-400">
               Balance: {pool.principalTokens} Principals &{" "}
               {pool.yieldTokens} Yields
             </span>
@@ -39,12 +39,12 @@ export default function RedeemTab({ pool }: { pool: Pool }) {
           />
 
           {/* Principals row */}
-          <div className="flex items-center justify-between pt-2 border-t border-gray-100">
+          <div className="flex items-center justify-between pt-2 border-t border-gray-700/20">
             <div>
-              <p className="text-base font-semibold text-gray-900">
+              <p className="text-base font-semibold text-white">
                 Principals
               </p>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-gray-400">
                 Balance {pool.principalTokens} Principals
               </p>
             </div>
@@ -57,10 +57,10 @@ export default function RedeemTab({ pool }: { pool: Pool }) {
           </div>
 
           {/* Yields row */}
-          <div className="flex items-center justify-between pt-2 border-t border-gray-100">
+          <div className="flex items-center justify-between pt-2 border-t border-gray-700/20">
             <div>
-              <p className="text-base font-semibold text-gray-900">Yields</p>
-              <p className="text-sm text-gray-500">
+              <p className="text-base font-semibold text-white">Yields</p>
+              <p className="text-sm text-gray-400">
                 Balance {pool.yieldTokens} Yields
               </p>
             </div>
@@ -77,10 +77,10 @@ export default function RedeemTab({ pool }: { pool: Pool }) {
       {/* To section */}
       <div className="mb-8">
         <SectionHeader title="To" withDivider />
-        <div className="rounded-xl border border-gray-200 p-5 shadow-sm">
+        <div className="rounded-xl border border-gray-700/30 p-5 bg-[#151f2e]">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-500">Token</span>
+              <span className="text-sm text-gray-400">Token</span>
               <TokenSelector
                 token={redeemToken}
                 onToggle={() =>
@@ -88,7 +88,7 @@ export default function RedeemTab({ pool }: { pool: Pool }) {
                 }
               />
             </div>
-            <span className="text-sm text-gray-400">
+            <span className="text-sm text-gray-500">
               Estimate: {redeemToken}
             </span>
           </div>

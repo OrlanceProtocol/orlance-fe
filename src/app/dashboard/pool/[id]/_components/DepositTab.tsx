@@ -17,7 +17,7 @@ export default function DepositTab({ pool }: { pool: Pool }) {
       {/* From section */}
       <div className="mb-6">
         <SectionHeader title="From" />
-        <div className="rounded-xl border border-gray-200 p-5 shadow-sm">
+        <div className="rounded-xl border border-gray-700/30 p-5 bg-[#151f2e]">
           <TokenInput
             selectedToken={selectedToken}
             onSelectToken={setSelectedToken}

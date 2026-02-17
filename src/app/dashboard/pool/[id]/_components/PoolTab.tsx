@@ -14,13 +14,13 @@ export default function PoolTab({ pool }: { pool: Pool }) {
     <>
       {/* Add / Remove Liquidity sub-tabs */}
       <div className="flex justify-center mb-6">
-        <div className="inline-flex rounded-lg border border-gray-200 overflow-hidden">
+        <div className="inline-flex rounded-lg border border-gray-700/30 overflow-hidden">
           <button
             onClick={() => setPoolSubTab("add")}
             className={`px-5 py-2 text-sm font-medium transition-colors cursor-pointer ${
               poolSubTab === "add"
-                ? "bg-gray-100 text-gray-900"
-                : "bg-white text-gray-400 hover:text-gray-600"
+                ? "bg-[#1a2332] text-white"
+                : "bg-[#151f2e] text-gray-500 hover:text-gray-300"
             }`}
           >
             Add Liquidity
@@ -29,8 +29,8 @@ export default function PoolTab({ pool }: { pool: Pool }) {
             onClick={() => setPoolSubTab("remove")}
             className={`px-5 py-2 text-sm font-medium transition-colors cursor-pointer ${
               poolSubTab === "remove"
-                ? "bg-gray-100 text-gray-900"
-                : "bg-white text-gray-400 hover:text-gray-600"
+                ? "bg-[#1a2332] text-white"
+                : "bg-[#151f2e] text-gray-500 hover:text-gray-300"
             }`}
           >
             Remove Liquidity
@@ -39,14 +39,14 @@ export default function PoolTab({ pool }: { pool: Pool }) {
       </div>
 
       {/* Ratio of Assets */}
-      <div className="rounded-xl border border-gray-200 p-4 shadow-sm mb-6">
-        <p className="text-base font-semibold text-gray-900 mb-2">
+      <div className="rounded-xl border border-gray-700/30 p-4 bg-[#151f2e] mb-6">
+        <p className="text-base font-semibold text-white mb-2">
           Ratio of Assets
         </p>
         <div className="flex items-center justify-between">
           <div className="text-center">
-            <p className="text-lg font-semibold text-gray-900">4.106%</p>
-            <p className="text-xs text-gray-400">
+            <p className="text-lg font-semibold text-white">4.106%</p>
+            <p className="text-xs text-gray-500">
               Principal
               <br />
               Yield
@@ -70,8 +70,8 @@ export default function PoolTab({ pool }: { pool: Pool }) {
             </svg>
           </div>
           <div className="text-center">
-            <p className="text-lg font-semibold text-gray-900">95.893%</p>
-            <p className="text-xs text-gray-400">
+            <p className="text-lg font-semibold text-white">95.893%</p>
+            <p className="text-xs text-gray-500">
               Yield
               <br />
               Principal
@@ -85,13 +85,13 @@ export default function PoolTab({ pool }: { pool: Pool }) {
         <SectionHeader title="From" withDivider />
 
         {/* Principals */}
-        <div className="rounded-xl border border-gray-200 p-4 shadow-sm">
+        <div className="rounded-xl border border-gray-700/30 p-4 bg-[#151f2e]">
           <div className="flex items-center justify-between mb-3">
-            <p className="text-base font-semibold text-gray-900">Principals</p>
-            <span className="text-sm text-gray-500">
+            <p className="text-base font-semibold text-white">Principals</p>
+            <span className="text-sm text-gray-400">
               Balance {pool.principalTokens}
             </span>
-            <span className="text-sm font-medium text-gray-500">Approved</span>
+            <span className="text-sm font-medium text-gray-400">Approved</span>
           </div>
           <PercentageButtons
             balance={pool.principalTokens}
@@ -103,13 +103,13 @@ export default function PoolTab({ pool }: { pool: Pool }) {
         <PlusConnector />
 
         {/* Yields */}
-        <div className="rounded-xl border border-gray-200 p-4 shadow-sm">
+        <div className="rounded-xl border border-gray-700/30 p-4 bg-[#151f2e]">
           <div className="flex items-center justify-between mb-3">
-            <p className="text-base font-semibold text-gray-900">Yields</p>
-            <span className="text-sm text-gray-500">
+            <p className="text-base font-semibold text-white">Yields</p>
+            <span className="text-sm text-gray-400">
               Balance {pool.yieldTokens}
             </span>
-            <span className="text-sm font-medium text-gray-500">Approved</span>
+            <span className="text-sm font-medium text-gray-400">Approved</span>
           </div>
           <PercentageButtons
             balance={pool.yieldTokens}
@@ -122,13 +122,13 @@ export default function PoolTab({ pool }: { pool: Pool }) {
       {/* To section */}
       <div className="mb-8">
         <SectionHeader title="To" withDivider />
-        <div className="rounded-xl border border-gray-200 p-5 shadow-sm">
+        <div className="rounded-xl border border-gray-700/30 p-5 bg-[#151f2e]">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-base font-semibold text-gray-900">LP Tokens</p>
-              <p className="text-sm text-gray-400">Estimate: LP Tokens</p>
+              <p className="text-base font-semibold text-white">LP Tokens</p>
+              <p className="text-sm text-gray-500">Estimate: LP Tokens</p>
             </div>
-            <span className="text-sm text-gray-400">0% share of Pool</span>
+            <span className="text-sm text-gray-500">0% share of Pool</span>
           </div>
         </div>
       </div>
