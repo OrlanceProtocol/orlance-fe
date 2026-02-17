@@ -1,5 +1,8 @@
+"use client";
+
 import PoolSummaryRow from "./PoolSummaryRow";
 import { pools } from "@/data/pools";
+import { useOrlancePoolData } from "@/hooks/useOrlancePoolData";
 
 const COLUMNS = [
   { label: "Asset", width: "12%" },
@@ -12,29 +15,34 @@ const COLUMNS = [
   { label: "Fixed APR", width: "14%" },
 ];
 
-export const GRID_COLS = COLUMNS.map((c) => c.width);
-
-const stETHPools = pools.map((p) => ({
-  id: p.id,
-  protocol: p.protocol,
-  maturity: p.maturity,
-  fixedAPR: p.fixedAPR,
-  lpAPR: p.lpAPR,
-  tvl: p.tvl,
-  balance: p.balance,
-  ethAmount: p.ethAmount,
-  stEthAmount: p.stEthAmount,
-  isHighAPR: p.isHighAPR,
-}));
+export const GRID_COLS = COLUMNS.map((column) => column.width);
 
 export default function PoolTable() {
+  const pool = pools[0];
+  const onchain = useOrlancePoolData();
+  const walletPositionStEth = Number(onchain.formatted.positionStEth) || 0;
+  const availableDepositStEth =
+    (Number(onchain.formatted.eth) || 0) + (Number(onchain.formatted.stEth) || 0);
+
+  const stEthPoolRow = {
+    id: pool.id,
+    protocol: pool.protocol,
+    maturity: pool.maturity,
+    fixedAPR: Number(onchain.formatted.fixedApr),
+    lpAPR: Number(onchain.formatted.lpApr),
+    tvl: `${Number(onchain.formatted.tvlStEth).toFixed(2)} stETH`,
+    balance: onchain.isConnected ? `${walletPositionStEth.toFixed(4)} stETH` : "Connect wallet",
+    ethAmount: Number(onchain.formatted.eth),
+    stEthAmount: Number(onchain.formatted.stEth),
+    isHighAPR: pool.isHighAPR,
+  };
+
   return (
     <div className="bg-[#111827]/80 rounded-xl border border-gray-800 backdrop-blur-sm flex-1">
-      {/* Header */}
       <div className="flex items-center justify-between px-8 pt-5 pb-4">
         <h2 className="text-xl font-semibold text-white">Available Pools</h2>
         <button className="flex items-center gap-2 text-base text-gray-400 hover:text-white transition-colors">
-          Filter
+          {onchain.isLoading ? "Syncing..." : "Live"}
           <svg width="18" height="18" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5">
             <path d="M1 3h12M3 7h8M5 11h4" strokeLinecap="round" />
           </svg>
@@ -42,32 +50,30 @@ export default function PoolTable() {
       </div>
       <div className="mx-6 border-t border-gray-700" />
 
-      {/* Column Headers */}
       <div
         className="grid border-b border-gray-800 px-6"
         style={{ gridTemplateColumns: GRID_COLS.join(" ") }}
       >
-        {COLUMNS.map((col) => (
+        {COLUMNS.map((column) => (
           <div
-            key={col.label}
+            key={column.label}
             className="py-4 px-2 text-sm font-medium text-gray-500 tracking-wide text-center"
           >
-            {col.label}
+            {column.label}
           </div>
         ))}
       </div>
 
-      {/* Pool Content */}
       <div className="px-6 py-4">
         <PoolSummaryRow
           asset="ETH"
-          maturityRange="Dec 2025 - Jun 2026"
-          maxFixedAPR={138.61}
-          maxLpAPR={35.68}
-          totalTVL="$207.05M"
-          balance="$80.64k"
-          availableToDeposit="$42.79k"
-          pools={stETHPools}
+          maturityRange={pool.maturity}
+          maxFixedAPR={Number(onchain.formatted.fixedApr)}
+          maxLpAPR={Number(onchain.formatted.lpApr)}
+          totalTVL={`${Number(onchain.formatted.tvlStEth).toFixed(2)} stETH`}
+          balance={onchain.isConnected ? `${walletPositionStEth.toFixed(4)} stETH` : "0 stETH"}
+          availableToDeposit={`${availableDepositStEth.toFixed(4)} stETH`}
+          pools={[stEthPoolRow]}
         />
       </div>
     </div>

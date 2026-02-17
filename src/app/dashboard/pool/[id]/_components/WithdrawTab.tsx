@@ -1,123 +1,90 @@
-import { useState } from "react";
+import { useAccount, useWaitForTransactionReceipt, useWriteContract } from "wagmi";
 import type { Pool } from "@/data/pools";
 import SectionHeader from "./SectionHeader";
-import PlusConnector from "./PlusConnector";
-import ApproveButton from "./ApproveButton";
 import ExecuteButton from "./ExecuteButton";
-import TokenSelector from "./TokenSelector";
-
-type ApprovalState = {
-  principals: boolean;
-  yields: boolean;
-  lp: boolean;
-};
+import { ORLANCE_DEPLOYMENT, routerAbi, vaultAbi } from "@/lib/orlance/contracts";
+import { useOrlancePoolData } from "@/hooks/useOrlancePoolData";
 
 export default function WithdrawTab({ pool }: { pool: Pool }) {
-  const [withdrawToken, setWithdrawToken] = useState<"ETH" | "stETH">("stETH");
-  const [approvals, setApprovals] = useState<ApprovalState>({
-    principals: false,
-    yields: false,
-    lp: false,
-  });
+  const { address } = useAccount();
+  const onchain = useOrlancePoolData();
 
-  const ethPrice = 3818.62;
-  const totalWithdrawTokens =
-    pool.principalTokens + pool.yieldTokens + pool.lpTokens;
-  const estimateUSD = (totalWithdrawTokens * ethPrice).toFixed(2);
-  const allApproved = approvals.principals && approvals.yields && approvals.lp;
+  const redeemAllWrite = useWriteContract();
+  const claimWrite = useWriteContract();
+  const redeemAllReceipt = useWaitForTransactionReceipt({ hash: redeemAllWrite.data });
+  const claimReceipt = useWaitForTransactionReceipt({ hash: claimWrite.data });
 
-  const handleApprove = (token: keyof ApprovalState) => {
-    setApprovals((prev) => ({ ...prev, [token]: true }));
+  const handleRedeemAll = async () => {
+    if (!address || onchain.balances.tps <= 0n) return;
+    await redeemAllWrite.writeContractAsync({
+      abi: routerAbi,
+      address: ORLANCE_DEPLOYMENT.addresses.router,
+      functionName: "zapRedeem",
+      args: [BigInt(ORLANCE_DEPLOYMENT.maturityTimestamp), onchain.balances.tps],
+      chainId: ORLANCE_DEPLOYMENT.chainId,
+    });
+  };
+
+  const handleClaim = async () => {
+    if (!address || onchain.balances.pendingYield <= 0n) return;
+    await claimWrite.writeContractAsync({
+      abi: vaultAbi,
+      address: ORLANCE_DEPLOYMENT.addresses.vault,
+      functionName: "claimYield",
+      args: [BigInt(ORLANCE_DEPLOYMENT.maturityTimestamp)],
+      chainId: ORLANCE_DEPLOYMENT.chainId,
+    });
   };
 
   return (
     <>
-      {/* From section */}
       <div className="mb-6">
-        <SectionHeader title="From" withDivider />
-
-        {/* Principals */}
-        <div className="rounded-xl border border-gray-700/30 p-4 bg-[#151f2e]">
+        <SectionHeader title="Withdraw Summary" withDivider />
+        <div className="rounded-xl border border-gray-700/30 p-5 bg-[#151f2e] space-y-2 text-sm">
           <div className="flex items-center justify-between">
-            <div>
-              <p className="text-base font-semibold text-white">
-                Principals
-              </p>
-              <p className="text-sm text-gray-400">
-                Balance {pool.principalTokens} Principals
-              </p>
-            </div>
-            <ApproveButton
-              approved={approvals.principals}
-              onApprove={() => handleApprove("principals")}
-            />
+            <span className="text-gray-400">TPS Balance</span>
+            <span className="text-white">{onchain.formatted.tps}</span>
           </div>
-        </div>
-
-        <PlusConnector />
-
-        {/* Yields */}
-        <div className="rounded-xl border border-gray-700/30 p-4 bg-[#151f2e]">
           <div className="flex items-center justify-between">
-            <div>
-              <p className="text-base font-semibold text-white">Yields</p>
-              <p className="text-sm text-gray-400">
-                Balance {pool.yieldTokens} Yields
-              </p>
-            </div>
-            <ApproveButton
-              approved={approvals.yields}
-              onApprove={() => handleApprove("yields")}
-            />
+            <span className="text-gray-400">TYS Balance</span>
+            <span className="text-white">{onchain.formatted.tys}</span>
           </div>
-        </div>
-
-        <PlusConnector />
-
-        {/* LP Tokens */}
-        <div className="rounded-xl border border-gray-700/30 p-4 bg-[#151f2e]">
           <div className="flex items-center justify-between">
-            <div>
-              <p className="text-base font-semibold text-white">LP Tokens</p>
-              <p className="text-sm text-gray-400">
-                Balance {pool.lpTokens} LP Tokens
-              </p>
-            </div>
-            <ApproveButton
-              approved={approvals.lp}
-              onApprove={() => handleApprove("lp")}
-            />
+            <span className="text-gray-400">Pending Yield</span>
+            <span className="text-teal-300">{onchain.formatted.pendingYield} stETH</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-gray-400">Pool</span>
+            <span className="text-white">{pool.id}</span>
           </div>
         </div>
       </div>
 
-      {/* To section */}
-      <div className="mb-8">
-        <SectionHeader title="To" withDivider />
-        <div className="rounded-xl border border-gray-700/30 p-4 bg-[#151f2e]">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-400">Token</span>
-              <TokenSelector
-                token={withdrawToken}
-                onToggle={() =>
-                  setWithdrawToken(withdrawToken === "ETH" ? "stETH" : "ETH")
-                }
-              />
-            </div>
-            <div className="text-right">
-              <p className="text-sm font-medium text-white">
-                Estimate: {totalWithdrawTokens.toFixed(4)} {withdrawToken}
-              </p>
-              <p className="text-xs text-gray-500">
-                ~${Number(estimateUSD).toLocaleString()}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+      <div className="space-y-3">
+        <ExecuteButton
+          enabled={Boolean(address) && onchain.balances.pendingYield > 0n}
+          pending={claimWrite.isPending || claimReceipt.isLoading}
+          fullWidth
+          label="Claim All Yield"
+          pendingLabel="Claiming..."
+          onClick={() => {
+            void handleClaim();
+          }}
+        />
 
-      <ExecuteButton enabled={allApproved} fullWidth />
+        <ExecuteButton
+          enabled={Boolean(address) && onchain.balances.tps > 0n}
+          pending={redeemAllWrite.isPending || redeemAllReceipt.isLoading}
+          fullWidth
+          label="Redeem All TPS"
+          pendingLabel="Redeeming..."
+          onClick={() => {
+            void handleRedeemAll();
+          }}
+        />
+        {claimWrite.error && <p className="text-red-400 text-center">{claimWrite.error.message}</p>}
+        {redeemAllWrite.error && <p className="text-red-400 text-center">{redeemAllWrite.error.message}</p>}
+      </div>
     </>
   );
 }

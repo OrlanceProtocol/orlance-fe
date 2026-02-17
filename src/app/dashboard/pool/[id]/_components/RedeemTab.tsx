@@ -1,101 +1,124 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { parseEther } from "viem";
+import { useAccount, useWaitForTransactionReceipt, useWriteContract } from "wagmi";
 import type { Pool } from "@/data/pools";
 import SectionHeader from "./SectionHeader";
 import PercentageButtons from "./PercentageButtons";
-import ApproveButton from "./ApproveButton";
 import ExecuteButton from "./ExecuteButton";
 import TokenSelector from "./TokenSelector";
+import { ORLANCE_DEPLOYMENT, routerAbi, vaultAbi } from "@/lib/orlance/contracts";
+import { useOrlancePoolData } from "@/hooks/useOrlancePoolData";
 
 export default function RedeemTab({ pool }: { pool: Pool }) {
   const [redeemAmount, setRedeemAmount] = useState("");
   const [redeemToken, setRedeemToken] = useState<"ETH" | "stETH">("stETH");
-  const [redeemApprovals, setRedeemApprovals] = useState({
-    principals: false,
-    yields: false,
-  });
+  const { address } = useAccount();
+  const onchain = useOrlancePoolData();
 
-  const minBalance = Math.min(pool.principalTokens, pool.yieldTokens);
+  const parsedAmount = useMemo(() => {
+    try {
+      return redeemAmount ? parseEther(redeemAmount) : 0n;
+    } catch {
+      return 0n;
+    }
+  }, [redeemAmount]);
+
+  const redeemWrite = useWriteContract();
+  const claimWrite = useWriteContract();
+  const redeemReceipt = useWaitForTransactionReceipt({ hash: redeemWrite.data });
+  const claimReceipt = useWaitForTransactionReceipt({ hash: claimWrite.data });
+
+  const handleRedeem = async () => {
+    if (!address || parsedAmount <= 0n) return;
+    await redeemWrite.writeContractAsync({
+      abi: routerAbi,
+      address: ORLANCE_DEPLOYMENT.addresses.router,
+      functionName: "zapRedeem",
+      args: [BigInt(ORLANCE_DEPLOYMENT.maturityTimestamp), parsedAmount],
+      chainId: ORLANCE_DEPLOYMENT.chainId,
+    });
+  };
+
+  const handleClaimYield = async () => {
+    if (!address) return;
+    await claimWrite.writeContractAsync({
+      abi: vaultAbi,
+      address: ORLANCE_DEPLOYMENT.addresses.vault,
+      functionName: "claimYield",
+      args: [BigInt(ORLANCE_DEPLOYMENT.maturityTimestamp)],
+      chainId: ORLANCE_DEPLOYMENT.chainId,
+    });
+  };
+
+  const canRedeem = parsedAmount > 0n && parsedAmount <= onchain.balances.tps;
+  const canClaim = onchain.balances.pendingYield > 0n;
+  const isRedeeming = redeemWrite.isPending || redeemReceipt.isLoading;
+  const isClaiming = claimWrite.isPending || claimReceipt.isLoading;
 
   return (
     <>
-      {/* From section */}
       <div className="mb-6">
         <SectionHeader title="From" withDivider />
         <div className="rounded-xl border border-gray-700/30 p-5 bg-[#151f2e] space-y-4">
-          {/* Primitives header with balance */}
           <div className="flex items-center justify-between">
-            <p className="text-base font-semibold text-white">Primitives</p>
-            <span className="text-sm text-gray-400">
-              Balance: {pool.principalTokens} Principals &{" "}
-              {pool.yieldTokens} Yields
-            </span>
+            <p className="text-base font-semibold text-white">Principals (TPS)</p>
+            <span className="text-sm text-gray-400">Balance: {onchain.formatted.tps}</span>
           </div>
-
-          {/* Amount input with percentage buttons */}
           <PercentageButtons
-            balance={minBalance}
+            balance={onchain.formatted.tps}
             amount={redeemAmount}
             onAmountChange={setRedeemAmount}
           />
-
-          {/* Principals row */}
-          <div className="flex items-center justify-between pt-2 border-t border-gray-700/20">
-            <div>
-              <p className="text-base font-semibold text-white">
-                Principals
-              </p>
-              <p className="text-sm text-gray-400">
-                Balance {pool.principalTokens} Principals
-              </p>
-            </div>
-            <ApproveButton
-              approved={redeemApprovals.principals}
-              onApprove={() =>
-                setRedeemApprovals((prev) => ({ ...prev, principals: true }))
-              }
-            />
-          </div>
-
-          {/* Yields row */}
-          <div className="flex items-center justify-between pt-2 border-t border-gray-700/20">
-            <div>
-              <p className="text-base font-semibold text-white">Yields</p>
-              <p className="text-sm text-gray-400">
-                Balance {pool.yieldTokens} Yields
-              </p>
-            </div>
-            <ApproveButton
-              approved={redeemApprovals.yields}
-              onApprove={() =>
-                setRedeemApprovals((prev) => ({ ...prev, yields: true }))
-              }
-            />
-          </div>
         </div>
       </div>
 
-      {/* To section */}
       <div className="mb-8">
         <SectionHeader title="To" withDivider />
-        <div className="rounded-xl border border-gray-700/30 p-5 bg-[#151f2e]">
+        <div className="rounded-xl border border-gray-700/30 p-5 bg-[#151f2e] space-y-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <span className="text-sm text-gray-400">Token</span>
               <TokenSelector
                 token={redeemToken}
-                onToggle={() =>
-                  setRedeemToken(redeemToken === "ETH" ? "stETH" : "ETH")
-                }
+                onToggle={() => setRedeemToken(redeemToken === "ETH" ? "stETH" : "ETH")}
               />
             </div>
-            <span className="text-sm text-gray-500">
-              Estimate: {redeemToken}
-            </span>
+            <span className="text-sm text-gray-500">Estimate: {redeemAmount || "0"} stETH</span>
           </div>
+          {redeemToken === "ETH" && (
+            <p className="text-sm text-yellow-300">
+              Current deployment uses MockLido, redeem output is stETH.
+            </p>
+          )}
+          <p className="text-sm text-gray-400">
+            Pending yield claimable now: {onchain.formatted.pendingYield} stETH
+          </p>
+          <p className="text-xs text-gray-500">Pool maturity: {pool.maturity}</p>
         </div>
       </div>
 
-      <ExecuteButton />
+      <div className="space-y-3">
+        <ExecuteButton
+          enabled={Boolean(address) && canRedeem}
+          pending={isRedeeming}
+          label="Redeem TPS"
+          pendingLabel="Redeeming..."
+          onClick={() => {
+            void handleRedeem();
+          }}
+        />
+        <ExecuteButton
+          enabled={Boolean(address) && canClaim}
+          pending={isClaiming}
+          label="Claim Yield"
+          pendingLabel="Claiming..."
+          onClick={() => {
+            void handleClaimYield();
+          }}
+        />
+        {redeemWrite.error && <p className="text-red-400 text-center">{redeemWrite.error.message}</p>}
+        {claimWrite.error && <p className="text-red-400 text-center">{claimWrite.error.message}</p>}
+      </div>
     </>
   );
 }

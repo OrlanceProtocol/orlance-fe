@@ -12,7 +12,7 @@ export default function PercentageButtons({
   amount,
   onAmountChange,
 }: {
-  balance: number;
+  balance: number | string;
   amount: string;
   onAmountChange: (val: string) => void;
 }) {
@@ -36,7 +36,9 @@ export default function PercentageButtons({
           key={p.label}
           onClick={() => {
             setSelectedPercent(p.value);
-            onAmountChange((balance * p.value).toFixed(4));
+            const numericBalance = typeof balance === "number" ? balance : Number(balance);
+            const safeBalance = Number.isFinite(numericBalance) ? numericBalance : 0;
+            onAmountChange((safeBalance * p.value).toFixed(4));
           }}
           className={`px-3 py-2 text-sm rounded-lg border transition-colors cursor-pointer ${
             selectedPercent === p.value
