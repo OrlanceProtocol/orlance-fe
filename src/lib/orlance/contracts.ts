@@ -26,6 +26,9 @@ export const ORLANCE_DEPLOYMENT = {
     tps: getAddressFromEnv(process.env.NEXT_PUBLIC_ORLANCE_TPS),
     tys: getAddressFromEnv(process.env.NEXT_PUBLIC_ORLANCE_TYS),
     amm: getAddressFromEnv(process.env.NEXT_PUBLIC_ORLANCE_SIMPLE_AMM),
+    autoRollerVault: getAddressFromEnv(
+      process.env.NEXT_PUBLIC_ORLANCE_AUTO_ROLLER_VAULT,
+    ),
   },
 } as const;
 
@@ -189,5 +192,58 @@ export const ammAbi = [
       { name: "amount0", type: "uint256" },
       { name: "amount1", type: "uint256" },
     ],
+  },
+] as const;
+
+export const autoRollerVaultAbi = [
+  ...erc20Abi,
+  {
+    type: "function",
+    stateMutability: "nonpayable",
+    name: "deposit",
+    inputs: [
+      { name: "assets", type: "uint256" },
+      { name: "receiver", type: "address" },
+    ],
+    outputs: [{ name: "shares", type: "uint256" }],
+  },
+  {
+    type: "function",
+    stateMutability: "nonpayable",
+    name: "withdraw",
+    inputs: [
+      { name: "assets", type: "uint256" },
+      { name: "receiver", type: "address" },
+      { name: "owner", type: "address" },
+    ],
+    outputs: [{ name: "shares", type: "uint256" }],
+  },
+  {
+    type: "function",
+    stateMutability: "view",
+    name: "totalAssets",
+    inputs: [],
+    outputs: [{ name: "", type: "uint256" }],
+  },
+  {
+    type: "function",
+    stateMutability: "view",
+    name: "nextRollOver",
+    inputs: [],
+    outputs: [{ name: "", type: "uint256" }],
+  },
+  {
+    type: "function",
+    stateMutability: "view",
+    name: "convertToAssets",
+    inputs: [{ name: "shares", type: "uint256" }],
+    outputs: [{ name: "assets", type: "uint256" }],
+  },
+  {
+    type: "function",
+    stateMutability: "view",
+    name: "convertToShares",
+    inputs: [{ name: "assets", type: "uint256" }],
+    outputs: [{ name: "shares", type: "uint256" }],
   },
 ] as const;

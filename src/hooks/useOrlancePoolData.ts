@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { type Address, formatEther, parseAbiItem, zeroAddress } from "viem";
+import { type Address, parseAbiItem, zeroAddress } from "viem";
 import { useAccount, useBalance, usePublicClient, useReadContracts } from "wagmi";
 import {
   ammAbi,
@@ -10,28 +10,14 @@ import {
   ORLANCE_DEPLOYMENT,
   vaultAbi,
 } from "@/lib/orlance/contracts";
-
-type ReadResult = readonly unknown[] | undefined;
+import {
+  safeBigInt,
+  toEtherNumber,
+  toFixedString,
+  clampApr,
+} from "@/lib/format";
 
 const secondsInYear = 365 * 24 * 60 * 60;
-
-function safeBigInt(readResult: ReadResult, index: number): bigint {
-  const value = readResult?.[index];
-  return typeof value === "bigint" ? value : 0n;
-}
-
-function toEtherNumber(value: bigint): number {
-  return Number(formatEther(value));
-}
-
-function toFixedString(value: number, fractionDigits = 4): string {
-  return Number.isFinite(value) ? value.toFixed(fractionDigits) : "0.0000";
-}
-
-function clampApr(value: number): number {
-  if (!Number.isFinite(value)) return 0;
-  return Math.max(Math.min(value, 9999), -9999);
-}
 
 export function useOrlancePoolData() {
   const { address, isConnected } = useAccount();
