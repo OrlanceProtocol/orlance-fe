@@ -146,7 +146,7 @@ function HowItWorksSection() {
             <span className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-teal-400" />
             <span className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-teal-400" />
             <span className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-teal-400" />
-            <img src="/icon/logo1section2.png" alt="Deposit Assets" className="w-full h-auto rounded-xl mb-5" />
+            <img src="/icon/logo1section2.png" alt="Deposit Assets" className="w-full h-56 object-contain rounded-xl mb-5" />
             <h3 className="text-lg font-bold text-white uppercase tracking-wide mb-2">Deposit Assets</h3>
             <p className="text-gray-400 text-sm leading-relaxed">
               Deposit yield-bearing tokens like stETH into Orlance pools.
@@ -174,7 +174,7 @@ function HowItWorksSection() {
             <span className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-teal-400" />
             <span className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-teal-400" />
             <span className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-teal-400" />
-            <img src="/icon/logo2section2.png" alt="Earn Your Way" className="w-full h-auto rounded-xl mb-5" />
+            <img src="/icon/logo2section2.png" alt="Earn Your Way" className="w-full h-56 object-contain rounded-xl mb-5" />
             <h3 className="text-lg font-bold text-white uppercase tracking-wide mb-2">Earn Your Way</h3>
             <p className="text-gray-400 text-sm leading-relaxed">
               Hold PT for guaranteed fixed returns at maturity, or hold YT
@@ -215,35 +215,43 @@ function WhyOrlanceSection() {
   ];
 
   return (
-    <section className="pt-4 pb-32 px-6 bg-black" style={{ fontFamily: "'Satoshi', sans-serif" }}>
+    <section className="pt-4 pb-4 px-6 bg-black" style={{ fontFamily: "'Satoshi', sans-serif" }}>
       <div className="max-w-6xl mx-auto">
-        <div className="flex justify-center mb-10">
-          <div className="px-5 py-2 border-2 border-teal-400 shadow-[0_0_20px_rgba(20,184,166,0.5),0_0_60px_rgba(20,184,166,0.3),inset_0_0_20px_rgba(20,184,166,0.1)]">
-            <h2 className="text-base md:text-lg font-bold text-teal-400 text-center">
-              Why Orlance?
-            </h2>
-          </div>
-        </div>
+        {/* Container with corner accents */}
+        <div className="relative border border-white/[0.08] p-8 md:p-12">
+          <span className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-teal-400" />
+          <span className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-teal-400" />
+          <span className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-teal-400" />
+          <span className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-teal-400" />
 
-        <div className="grid md:grid-cols-2 gap-5">
-          {/* Left — Dither background card */}
-          <div className="border border-white/[0.08] overflow-hidden relative min-h-[480px]">
-            <div className="absolute inset-0">
-              <DitherBackground />
+          <div className="flex justify-center mb-10">
+            <div className="px-5 py-2 border-2 border-teal-400 shadow-[0_0_20px_rgba(20,184,166,0.5),0_0_60px_rgba(20,184,166,0.3),inset_0_0_20px_rgba(20,184,166,0.1)]">
+              <h2 className="text-base md:text-lg font-bold text-teal-400 text-center">
+                Why Orlance?
+              </h2>
             </div>
-            <div className="relative z-10 flex flex-col items-center justify-center h-full p-8">
-              <div className="w-16 h-16 rounded-2xl bg-black/60 backdrop-blur-sm border border-white/10 flex items-center justify-center mb-4">
-                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" className="text-teal-400">
-                  <path d="M6 10 L16 4 L26 10 L26 22 L16 28 L6 22Z" stroke="currentColor" strokeWidth="2" fill="none" />
-                  <path d="M6 16 L16 10 L26 16" stroke="currentColor" strokeWidth="2" fill="none" />
-                </svg>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-5">
+            {/* Left — Dither background card */}
+            <div className="border border-white/[0.08] overflow-hidden relative min-h-[480px]">
+              <div className="absolute inset-0">
+                <DitherBackground />
               </div>
-              <span className="text-white font-bold text-lg tracking-tight">Dashboard</span>
+              <div className="relative z-10 flex flex-col items-center justify-center h-full p-8">
+                <div className="w-16 h-16 rounded-2xl bg-black/60 backdrop-blur-sm border border-white/10 flex items-center justify-center mb-4">
+                  <svg width="32" height="32" viewBox="0 0 32 32" fill="none" className="text-teal-400">
+                    <path d="M6 10 L16 4 L26 10 L26 22 L16 28 L6 22Z" stroke="currentColor" strokeWidth="2" fill="none" />
+                    <path d="M6 16 L16 10 L26 16" stroke="currentColor" strokeWidth="2" fill="none" />
+                  </svg>
+                </div>
+                <span className="text-white font-bold text-lg tracking-tight">Dashboard</span>
+              </div>
             </div>
-          </div>
 
-          {/* Right — 4 feature cards stacked with sweep animation */}
-          <AnimatedFeatureCards features={features} />
+            {/* Right — 4 feature cards stacked with sweep animation */}
+            <AnimatedFeatureCards features={features} />
+          </div>
         </div>
       </div>
     </section>
@@ -253,127 +261,59 @@ function WhyOrlanceSection() {
 /* ─────────────────────────────────────────────────────────────
    Section 4: Products
 ───────────────────────────────────────────────────────────── */
-/* ─────────────────────────────────────────────────────────────
-   Section 4: Products
-───────────────────────────────────────────────────────────── */
 function ProductsSection() {
   return (
-    <section id="products" className="py-32 px-6 bg-black">
+    <section id="products" className="pt-4 pb-32 px-6 bg-black" style={{ fontFamily: "'Satoshi', sans-serif" }}>
       <div className="max-w-6xl mx-auto">
-        <p className="text-teal-400 text-sm font-medium uppercase tracking-widest text-center mb-3">
-          Products
-        </p>
-        <h2 className="text-4xl md:text-5xl font-bold text-white text-center mb-5">
-          One protocol,{" "}
-          <span className="text-gray-400 font-normal">three ways to earn.</span>
-        </h2>
-        <p className="text-gray-400 text-lg text-center max-w-xl mx-auto mb-20">
-          Whether you want fixed income, passive yield, or a shot at a prize —
-          Orlance has a product for you.
-        </p>
+        <div className="flex justify-center mb-10">
+          <h2 className="text-4xl md:text-5xl font-bold text-teal-400 uppercase tracking-tight" style={{ transform: "scaleY(2.5)", transformOrigin: "top" }}>
+            OUR PRODUCTS
+          </h2>
+        </div>
 
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="mt-16">
+        <div className="grid md:grid-cols-3 gap-4 md:gap-5">
           {/* ── Pools card ── */}
-          <div className="rounded-2xl border border-teal-500/20 bg-gradient-to-br from-teal-500/10 to-cyan-500/5 p-8 flex flex-col hover:border-teal-500/40 transition-colors">
-            <span className="text-xs font-medium text-teal-400 bg-teal-500/10 border border-teal-500/20 px-3 py-1 rounded-full self-start mb-6">
-              Yield Stripping
-            </span>
-            <div className="text-teal-400 mb-4">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <circle cx="12" cy="12" r="10" />
-                <path d="M12 8v4l3 3" />
-              </svg>
-            </div>
-            <h3 className="text-xl font-bold text-white mb-3">Pools</h3>
-            <p className="text-gray-200 text-base leading-relaxed mb-6 flex-1" style={{ fontWeight: 650 }}>
-              Deposit yield-bearing assets and split them into Principal Tokens
-              (fixed yield) and Yield Tokens (variable/leveraged). Choose
-              maturities from 1 to 3 months.
+          <Link href="/dashboard" className="relative p-8 border border-white/[0.08] bg-white/[0.02] flex flex-col hover:border-teal-400 hover:shadow-[0_0_20px_rgba(20,184,166,0.4),0_0_60px_rgba(20,184,166,0.15)] transition-all duration-300 cursor-pointer">
+            <span className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-teal-400" />
+            <span className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-teal-400" />
+            <span className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-teal-400" />
+            <span className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-teal-400" />
+            <img src="/icon/pools.png" alt="Pools" className="w-full h-56 object-contain rounded-xl mb-5" />
+            <h3 className="text-lg font-bold text-white uppercase tracking-wide mb-2">Pools</h3>
+            <p className="text-gray-400 text-sm leading-relaxed">
+              Split yield-bearing assets into fixed and variable yield tokens.
             </p>
-            <ul className="space-y-2 mb-8">
-              {["Fixed APY via PT", "Leveraged yield via YT", "Multiple maturities", "AMM liquidity"].map((f) => (
-                <li key={f} className="flex items-center gap-2 text-sm text-gray-300">
-                  <span className="w-1.5 h-1.5 rounded-full bg-teal-400 shrink-0" />
-                  {f}
-                </li>
-              ))}
-            </ul>
-            <Link
-              href="/dashboard"
-              className="flex items-center gap-1.5 text-sm font-medium text-teal-400 group"
-            >
-              Open Pools{" "}
-              <span className="group-hover:translate-x-1 transition-transform inline-block">→</span>
-            </Link>
-          </div>
+          </Link>
 
           {/* ── Vault card ── */}
-          <div className="rounded-2xl border border-indigo-500/20 bg-gradient-to-br from-indigo-500/10 to-purple-500/5 p-8 flex flex-col hover:border-indigo-500/40 transition-colors">
-            <span className="text-xs font-medium text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-3 py-1 rounded-full self-start mb-6">
-              Auto-Roller
-            </span>
-            <div className="text-indigo-400 mb-4">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <path d="M21.5 2v6h-6" />
-                <path d="M21.34 15.57a10 10 0 1 1-.57-8.38" />
-              </svg>
-            </div>
-            <h3 className="text-xl font-bold text-white mb-3">Vault</h3>
-            <p className="text-gray-200 text-base leading-relaxed mb-6 flex-1" style={{ fontWeight: 650 }}>
-              Deposit once and let Orlance handle the rest. The auto-roller vault
-              automatically compounds and rolls your position at maturity —
-              set it and forget it.
+          <Link href="/dashboard/vault" className="relative p-8 border border-white/[0.08] bg-white/[0.02] flex flex-col hover:border-teal-400 hover:shadow-[0_0_20px_rgba(20,184,166,0.4),0_0_60px_rgba(20,184,166,0.15)] transition-all duration-300 cursor-pointer">
+            <span className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-teal-400" />
+            <span className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-teal-400" />
+            <span className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-teal-400" />
+            <span className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-teal-400" />
+            <img src="/icon/Vault.png" alt="Vault" className="w-full h-56 object-contain rounded-xl mb-5" />
+            <h3 className="text-lg font-bold text-white uppercase tracking-wide mb-2">Vault</h3>
+            <p className="text-gray-400 text-sm leading-relaxed">
+              Auto-compound and auto-roll your yield — set it and forget it.
             </p>
-            <ul className="space-y-2 mb-8">
-              {["Auto-compound yield", "Auto-roll at maturity", "Passive income", "No manual rebalancing"].map((f) => (
-                <li key={f} className="flex items-center gap-2 text-sm text-gray-300">
-                  <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0" />
-                  {f}
-                </li>
-              ))}
-            </ul>
-            <Link
-              href="/dashboard/vault"
-              className="flex items-center gap-1.5 text-sm font-medium text-indigo-400 group"
-            >
-              Open Vault{" "}
-              <span className="group-hover:translate-x-1 transition-transform inline-block">→</span>
-            </Link>
-          </div>
+          </Link>
 
           {/* ── Lottery card ── */}
-          <div className="rounded-2xl border border-amber-500/20 bg-gradient-to-br from-amber-500/10 to-orange-500/5 p-8 flex flex-col hover:border-amber-500/40 transition-colors">
-            <span className="text-xs font-medium text-amber-400 bg-amber-500/10 border border-amber-500/20 px-3 py-1 rounded-full self-start mb-6">
-              No-Loss
-            </span>
-            <div className="text-amber-400 mb-4">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-              </svg>
-            </div>
-            <h3 className="text-xl font-bold text-white mb-3">Lottery</h3>
-            <p className="text-gray-200 text-base leading-relaxed mb-6 flex-1" style={{ fontWeight: 650 }}>
-              Deposit into the no-loss lottery pool. Your principal is always safe —
-              the yield generated by the pool funds the prize pot, giving you a
-              chance to win big, risk-free.
+          <Link href="/dashboard/lottery" className="relative p-8 border border-white/[0.08] bg-white/[0.02] flex flex-col hover:border-teal-400 hover:shadow-[0_0_20px_rgba(20,184,166,0.4),0_0_60px_rgba(20,184,166,0.15)] transition-all duration-300 cursor-pointer">
+            <span className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-teal-400" />
+            <span className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-teal-400" />
+            <span className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-teal-400" />
+            <span className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-teal-400" />
+            <img src="/icon/lottery.png" alt="Lottery" className="w-full h-56 object-contain rounded-xl mb-5" />
+            <h3 className="text-lg font-bold text-white uppercase tracking-wide mb-2">Lottery</h3>
+            <p className="text-gray-400 text-sm leading-relaxed">
+              No-loss prize pool — your principal stays safe, yield funds the prize.
             </p>
-            <ul className="space-y-2 mb-8">
-              {["Principal always safe", "Yield funds the prize", "Weekly prize draws", "Zero-risk to enter"].map((f) => (
-                <li key={f} className="flex items-center gap-2 text-sm text-gray-300">
-                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400 shrink-0" />
-                  {f}
-                </li>
-              ))}
-            </ul>
-            <Link
-              href="/dashboard/lottery"
-              className="flex items-center gap-1.5 text-sm font-medium text-amber-400 group"
-            >
-              Try Lottery{" "}
-              <span className="group-hover:translate-x-1 transition-transform inline-block">→</span>
-            </Link>
-          </div>
+          </Link>
         </div>
+        </div>
+        <p className="text-gray-500 text-xs text-center mt-4">Click on a card to go to its page</p>
       </div>
     </section>
   );
