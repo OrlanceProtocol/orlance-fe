@@ -3,6 +3,7 @@ import DitherBackground from "./_components/DitherBackground";
 import SmoothScroll from "./_components/SmoothScroll";
 import AnimatedFeatureCards from "./_components/AnimatedFeatureCards";
 import ScrollNav from "./_components/ScrollNav";
+import ThreadsBackground from "./_components/ThreadsBackground";
 
 /* ─────────────────────────────────────────────────────────────
    Shared: Logo
@@ -215,10 +216,10 @@ function WhyOrlanceSection() {
   ];
 
   return (
-    <section className="pt-4 pb-4 px-6 bg-black" style={{ fontFamily: "'Satoshi', sans-serif" }}>
-      <div className="max-w-6xl mx-auto">
+    <section className="pt-4 pb-4 px-6 bg-black relative overflow-hidden" style={{ fontFamily: "'Satoshi', sans-serif" }}>
+      <div className="max-w-6xl mx-auto relative z-10">
         {/* Container with corner accents */}
-        <div className="relative border border-white/[0.08] p-8 md:p-12">
+        <div className="relative border border-white/[0.08] bg-white/[0.02] p-8 md:p-12">
           <span className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-teal-400" />
           <span className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-teal-400" />
           <span className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-teal-400" />
@@ -263,8 +264,12 @@ function WhyOrlanceSection() {
 ───────────────────────────────────────────────────────────── */
 function ProductsSection() {
   return (
-    <section id="products" className="pt-4 pb-32 px-6 bg-black" style={{ fontFamily: "'Satoshi', sans-serif" }}>
-      <div className="max-w-6xl mx-auto">
+    <section id="products" className="pt-4 pb-32 px-6 bg-black relative overflow-hidden" style={{ fontFamily: "'Satoshi', sans-serif" }}>
+      {/* Threads background — shifted down */}
+      <div className="absolute inset-0 top-[30%] z-0">
+        <ThreadsBackground />
+      </div>
+      <div className="max-w-6xl mx-auto relative z-10">
         <div className="flex justify-center mb-32">
           <h2 className="text-4xl md:text-5xl font-bold text-teal-400 uppercase tracking-tight" style={{ transform: "scaleY(2.5)", transformOrigin: "top", fontFamily: "var(--font-orbitron)", fontWeight: 900 }}>
             OUR PRODUCTS
