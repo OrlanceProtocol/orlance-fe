@@ -1,5 +1,6 @@
 import Link from "next/link";
 import DitherBackground from "./_components/DitherBackground";
+import SmoothScroll from "./_components/SmoothScroll";
 
 /* ─────────────────────────────────────────────────────────────
    Shared: Logo
@@ -21,7 +22,7 @@ function OrlanceLogo() {
 ───────────────────────────────────────────────────────────── */
 function LandingNav() {
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-5 bg-[#0B1120]/80 backdrop-blur-md border-b border-white/5">
+    <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-5 bg-black/80 backdrop-blur-md border-b border-white/5">
       <OrlanceLogo />
       <div className="flex items-center gap-6">
         <a
@@ -59,7 +60,7 @@ function HeroSection() {
       </div>
 
       {/* Dark overlay so text is readable */}
-      <div className="absolute inset-0 bg-[#0B1120]/72" />
+      <div className="absolute inset-0 bg-black/72" />
 
       {/* Hero content */}
       <div className="relative z-10 text-center max-w-4xl px-6 mx-auto">
@@ -100,7 +101,7 @@ function HeroSection() {
         {/* Stats row */}
         <div className="flex items-center justify-center gap-12 mt-16 flex-wrap">
           {[
-            { label: "Total Value Locked", value: "$—" },
+            { label: "Total Value Locked", value: "Live on Testnet" },
             { label: "Active Pools", value: "3" },
             { label: "Network", value: "Arbitrum" },
           ].map((stat) => (
@@ -135,7 +136,7 @@ function HeroSection() {
 ───────────────────────────────────────────────────────────── */
 function HowItWorksSection() {
   return (
-    <section id="how-it-works" className="py-32 px-6 bg-[#0B1120]">
+    <section id="how-it-works" className="pt-32 pb-4 px-6 bg-black">
       <div className="max-w-6xl mx-auto">
         <p className="text-teal-400 text-sm font-medium uppercase tracking-widest text-center mb-3">
           How it works
@@ -148,21 +149,12 @@ function HowItWorksSection() {
           Three steps to unlock fixed income or leveraged yield on your DeFi assets.
         </p>
 
-        <div className="grid md:grid-cols-3 gap-6 relative">
-          {/* Connector line (desktop only) */}
-          <div className="hidden md:block absolute top-[3.25rem] left-[calc(16.67%+2rem)] right-[calc(16.67%+2rem)] h-px bg-gradient-to-r from-teal-500/20 via-teal-500/50 to-teal-500/20" />
-
+        {/* Bento grid layout */}
+        <div className="grid md:grid-cols-3 gap-4 md:gap-5">
           {/* Step 1 */}
-          <div className="p-8 rounded-2xl border border-white/[0.08] bg-white/[0.02] flex flex-col items-center text-center hover:border-teal-500/20 transition-colors">
-            <span className="text-xs font-mono text-teal-500/50 mb-5 tracking-widest">01</span>
-            <div className="w-16 h-16 rounded-2xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400 mb-6 relative z-10">
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <path d="M12 2L2 7l10 5 10-5-10-5z" />
-                <path d="M2 17l10 5 10-5" />
-                <path d="M2 12l10 5 10-5" />
-              </svg>
-            </div>
-            <h3 className="text-lg font-semibold text-white mb-3">Deposit Assets</h3>
+          <div className="p-8 border border-white/[0.08] bg-white/[0.02] flex flex-col justify-end hover:border-teal-500/20 transition-colors">
+            <img src="/icon/logo1section2.png" alt="Deposit Assets" className="w-full h-auto rounded-xl mb-5" />
+            <h3 className="text-lg font-bold text-white uppercase tracking-wide mb-2">Deposit Assets</h3>
             <p className="text-gray-400 text-sm leading-relaxed">
               Deposit yield-bearing tokens like stETH into Orlance pools.
               Your position is secured on-chain on Arbitrum.
@@ -170,33 +162,19 @@ function HowItWorksSection() {
           </div>
 
           {/* Step 2 */}
-          <div className="p-8 rounded-2xl border border-white/[0.08] bg-white/[0.02] flex flex-col items-center text-center hover:border-teal-500/20 transition-colors">
-            <span className="text-xs font-mono text-teal-500/50 mb-5 tracking-widest">02</span>
-            <div className="w-16 h-16 rounded-2xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400 mb-6 relative z-10">
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <rect width="7" height="7" x="3" y="3" rx="1" />
-                <rect width="7" height="7" x="14" y="3" rx="1" />
-                <rect width="7" height="7" x="14" y="14" rx="1" />
-                <rect width="7" height="7" x="3" y="14" rx="1" />
-              </svg>
-            </div>
-            <h3 className="text-lg font-semibold text-white mb-3">Receive PT & YT</h3>
-            <p className="text-gray-400 text-sm leading-relaxed">
+          <div className="p-8 border border-white/[0.08] bg-white/[0.02] flex flex-col justify-end hover:border-teal-500/20 transition-colors">
+            <h3 className="text-lg font-bold text-white uppercase tracking-wide mb-2">Receive PT & YT</h3>
+            <p className="text-gray-400 text-sm leading-relaxed mb-5">
               Your deposit is split into Principal Tokens (PT) for fixed yield
               and Yield Tokens (YT) for leveraged yield exposure.
             </p>
+            <img src="/icon/logo3section2.png" alt="Receive PT & YT" className="w-full h-auto rounded-xl" />
           </div>
 
           {/* Step 3 */}
-          <div className="p-8 rounded-2xl border border-white/[0.08] bg-white/[0.02] flex flex-col items-center text-center hover:border-teal-500/20 transition-colors">
-            <span className="text-xs font-mono text-teal-500/50 mb-5 tracking-widest">03</span>
-            <div className="w-16 h-16 rounded-2xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400 mb-6 relative z-10">
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
-                <polyline points="16 7 22 7 22 13" />
-              </svg>
-            </div>
-            <h3 className="text-lg font-semibold text-white mb-3">Earn Your Way</h3>
+          <div className="p-8 border border-white/[0.08] bg-white/[0.02] flex flex-col justify-end hover:border-teal-500/20 transition-colors">
+            <img src="/icon/logo2section2.png" alt="Earn Your Way" className="w-full h-auto rounded-xl mb-5" />
+            <h3 className="text-lg font-bold text-white uppercase tracking-wide mb-2">Earn Your Way</h3>
             <p className="text-gray-400 text-sm leading-relaxed">
               Hold PT for guaranteed fixed returns at maturity, or hold YT
               to maximize yield exposure. Provide liquidity to earn trading fees.
@@ -209,11 +187,86 @@ function HowItWorksSection() {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   Section 3: Products
+   Section 3: Why Orlance (Feature Highlights)
+───────────────────────────────────────────────────────────── */
+function WhyOrlanceSection() {
+  const features = [
+    {
+      title: "Swap & Trade",
+      description:
+        "Trade Principal Tokens and stETH directly through the built-in AMM. Get instant price quotes and swap with minimal slippage.",
+    },
+    {
+      title: "Provide Liquidity",
+      description:
+        "Supply TPS and stETH to AMM pools and earn trading fees from every swap. Withdraw your liquidity anytime.",
+    },
+    {
+      title: "Real-time Dashboard",
+      description:
+        "Track your positions, pending yield, transaction history, and token prices — all updated in real time.",
+    },
+    {
+      title: "Multi-maturity Pools",
+      description:
+        "Choose from 1, 2, or 3-month maturity pools to match your investment horizon and risk preference.",
+    },
+  ];
+
+  return (
+    <section className="pt-4 pb-32 px-6 bg-black">
+      <div className="max-w-6xl mx-auto">
+        <div className="flex justify-center mb-10">
+          <div className="px-5 py-2 border-2 border-teal-400 shadow-[0_0_20px_rgba(20,184,166,0.5),0_0_60px_rgba(20,184,166,0.3),inset_0_0_20px_rgba(20,184,166,0.1)]">
+            <h2 className="text-base md:text-lg font-bold text-teal-400 text-center">
+              Why Orlance?
+            </h2>
+          </div>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-5">
+          {/* Left — Dither background card */}
+          <div className="border border-white/[0.08] overflow-hidden relative min-h-[480px]">
+            <div className="absolute inset-0">
+              <DitherBackground />
+            </div>
+            <div className="relative z-10 flex flex-col items-center justify-center h-full p-8">
+              <div className="w-16 h-16 rounded-2xl bg-black/60 backdrop-blur-sm border border-white/10 flex items-center justify-center mb-4">
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" className="text-teal-400">
+                  <path d="M6 10 L16 4 L26 10 L26 22 L16 28 L6 22Z" stroke="currentColor" strokeWidth="2" fill="none" />
+                  <path d="M6 16 L16 10 L26 16" stroke="currentColor" strokeWidth="2" fill="none" />
+                </svg>
+              </div>
+              <span className="text-white font-bold text-lg tracking-tight">Dashboard</span>
+            </div>
+          </div>
+
+          {/* Right — 4 feature cards stacked */}
+          <div className="flex flex-col gap-4">
+            {features.map((f, i) => (
+              <div
+                key={f.title}
+                className="p-5 border border-teal-500/40 bg-white/[0.02] hover:border-teal-400/60 transition-colors"
+              >
+                <h3 className="text-base font-bold text-white mb-1">
+                  {i + 1}. {f.title}
+                </h3>
+                <p className="text-gray-400 text-sm leading-relaxed">{f.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Section 4: Products
 ───────────────────────────────────────────────────────────── */
 function ProductsSection() {
   return (
-    <section id="products" className="py-32 px-6 bg-[#080E1A]">
+    <section id="products" className="py-32 px-6 bg-black">
       <div className="max-w-6xl mx-auto">
         <p className="text-teal-400 text-sm font-medium uppercase tracking-widest text-center mb-3">
           Products
@@ -335,15 +388,203 @@ function ProductsSection() {
 }
 
 /* ─────────────────────────────────────────────────────────────
+   Section 5: Security & Trust
+───────────────────────────────────────────────────────────── */
+function SecuritySection() {
+  const items = [
+    {
+      icon: (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+        </svg>
+      ),
+      title: "Non-custodial",
+      description: "You always hold your keys. Orlance never takes custody of your funds.",
+    },
+    {
+      icon: (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <path d="M16 18l6-6-6-6" />
+          <path d="M8 6l-6 6 6 6" />
+        </svg>
+      ),
+      title: "Open Source",
+      description: "All smart contracts are publicly verifiable on-chain.",
+    },
+    {
+      icon: (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <path d="M12 2L2 7l10 5 10-5-10-5z" />
+          <path d="M2 17l10 5 10-5" />
+          <path d="M2 12l10 5 10-5" />
+        </svg>
+      ),
+      title: "Arbitrum L2",
+      description: "Secured by Ethereum with low gas fees and fast transactions.",
+    },
+    {
+      icon: (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+          <polyline points="22 4 12 14.01 9 11.01" />
+        </svg>
+      ),
+      title: "Audited",
+      description: "Smart contracts reviewed for security vulnerabilities.",
+    },
+  ];
+
+  return (
+    <section className="py-32 px-6 bg-black">
+      <div className="max-w-6xl mx-auto">
+        <p className="text-teal-400 text-sm font-medium uppercase tracking-widest text-center mb-3">
+          Security
+        </p>
+        <h2 className="text-4xl md:text-5xl font-bold text-white text-center mb-5">
+          Built on{" "}
+          <span className="text-gray-400 font-normal">trust.</span>
+        </h2>
+        <p className="text-gray-400 text-lg text-center max-w-xl mx-auto mb-20">
+          Your assets are protected by battle-tested smart contracts on Arbitrum.
+        </p>
+
+        <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-6">
+          {items.map((item) => (
+            <div
+              key={item.title}
+              className="text-center p-6 rounded-2xl border border-white/[0.08] bg-white/[0.02] hover:border-teal-500/20 transition-colors"
+            >
+              <div className="w-12 h-12 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400 mx-auto mb-4">
+                {item.icon}
+              </div>
+              <h3 className="text-base font-semibold text-white mb-2">{item.title}</h3>
+              <p className="text-gray-400 text-sm leading-relaxed">{item.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Section 6: Footer
+───────────────────────────────────────────────────────────── */
+function Footer() {
+  return (
+    <footer className="border-t border-white/[0.08] bg-black px-6 py-16">
+      <div className="max-w-6xl mx-auto">
+        <div className="grid md:grid-cols-4 gap-12 mb-12">
+          {/* Brand */}
+          <div className="md:col-span-1">
+            <OrlanceLogo />
+            <p className="text-gray-500 text-sm mt-4 leading-relaxed">
+              Fixed income protocol for DeFi. Built on Arbitrum.
+            </p>
+          </div>
+
+          {/* Products */}
+          <div>
+            <h4 className="text-sm font-semibold text-white mb-4">Products</h4>
+            <ul className="space-y-3">
+              {[
+                { label: "Pools", href: "/dashboard" },
+                { label: "Vault", href: "/dashboard/vault" },
+                { label: "Lottery", href: "/dashboard/lottery" },
+              ].map((link) => (
+                <li key={link.label}>
+                  <Link href={link.href} className="text-sm text-gray-400 hover:text-white transition-colors">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Resources */}
+          <div>
+            <h4 className="text-sm font-semibold text-white mb-4">Resources</h4>
+            <ul className="space-y-3">
+              {[
+                { label: "How it works", href: "#how-it-works" },
+                { label: "Documentation", href: "#" },
+                { label: "Smart Contracts", href: "#" },
+              ].map((link) => (
+                <li key={link.label}>
+                  <a href={link.href} className="text-sm text-gray-400 hover:text-white transition-colors">
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Community */}
+          <div>
+            <h4 className="text-sm font-semibold text-white mb-4">Community</h4>
+            <div className="flex items-center gap-3">
+              {/* Twitter / X */}
+              <a
+                href="#"
+                className="w-10 h-10 rounded-lg bg-white/[0.05] border border-white/[0.08] flex items-center justify-center text-gray-400 hover:text-white hover:border-teal-500/30 transition-colors"
+                aria-label="Twitter"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                </svg>
+              </a>
+              {/* Discord */}
+              <a
+                href="#"
+                className="w-10 h-10 rounded-lg bg-white/[0.05] border border-white/[0.08] flex items-center justify-center text-gray-400 hover:text-white hover:border-teal-500/30 transition-colors"
+                aria-label="Discord"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.333-.947 2.418-2.157 2.418z" />
+                </svg>
+              </a>
+              {/* GitHub */}
+              <a
+                href="#"
+                className="w-10 h-10 rounded-lg bg-white/[0.05] border border-white/[0.08] flex items-center justify-center text-gray-400 hover:text-white hover:border-teal-500/30 transition-colors"
+                aria-label="GitHub"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0 0 22 12.017C22 6.484 17.522 2 12 2z" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom bar */}
+        <div className="border-t border-white/[0.08] pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-sm text-gray-500">
+            &copy; {new Date().getFullYear()} Orlance. All rights reserved.
+          </p>
+          <p className="text-sm text-gray-600">
+            Built on Arbitrum
+          </p>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────
    Root page
 ───────────────────────────────────────────────────────────── */
 export default function Home() {
   return (
-    <div className="bg-[#0B1120]">
+    <div className="bg-black">
+      <SmoothScroll />
       <LandingNav />
       <HeroSection />
       <HowItWorksSection />
+      <WhyOrlanceSection />
       <ProductsSection />
+      <SecuritySection />
+      <Footer />
     </div>
   );
 }
