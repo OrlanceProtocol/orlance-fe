@@ -1,4 +1,11 @@
 @import "tailwindcss";
+
+@font-face {
+  font-family: "Satoshi";
+  src: url("/font/Satoshi-Variable.ttf") format("truetype");
+  font-weight: 100 900;
+  font-display: swap;
+}
 @import "../../node_modules/tw-animate-css/dist/tw-animate.css";
 @import "../../node_modules/shadcn/dist/tailwind.css";
 

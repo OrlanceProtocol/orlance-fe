@@ -1,6 +1,8 @@
 import Link from "next/link";
 import DitherBackground from "./_components/DitherBackground";
 import SmoothScroll from "./_components/SmoothScroll";
+import AnimatedFeatureCards from "./_components/AnimatedFeatureCards";
+import ScrollNav from "./_components/ScrollNav";
 
 /* ─────────────────────────────────────────────────────────────
    Shared: Logo
@@ -22,21 +24,10 @@ function OrlanceLogo() {
 ───────────────────────────────────────────────────────────── */
 function LandingNav() {
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-5 bg-black/80 backdrop-blur-md border-b border-white/5">
+    <ScrollNav>
+    <nav className="flex items-center justify-between px-8 py-5 bg-black/30 backdrop-blur-xl border-b border-white/5">
       <OrlanceLogo />
       <div className="flex items-center gap-6">
-        <a
-          href="#how-it-works"
-          className="text-sm text-gray-400 hover:text-white transition-colors hidden sm:block"
-        >
-          How it works
-        </a>
-        <a
-          href="#products"
-          className="text-sm text-gray-400 hover:text-white transition-colors hidden sm:block"
-        >
-          Products
-        </a>
         <Link
           href="/dashboard"
           className="px-5 py-2 rounded-full bg-teal-500 hover:bg-teal-400 text-white text-sm font-medium transition-all hover:shadow-md hover:shadow-teal-500/30"
@@ -45,6 +36,7 @@ function LandingNav() {
         </Link>
       </div>
     </nav>
+    </ScrollNav>
   );
 }
 
@@ -136,23 +128,24 @@ function HeroSection() {
 ───────────────────────────────────────────────────────────── */
 function HowItWorksSection() {
   return (
-    <section id="how-it-works" className="pt-32 pb-4 px-6 bg-black">
+    <section id="how-it-works" className="pt-12 pb-4 px-6 bg-black" style={{ fontFamily: "'Satoshi', sans-serif" }}>
       <div className="max-w-6xl mx-auto">
-        <p className="text-teal-400 text-sm font-medium uppercase tracking-widest text-center mb-3">
-          How it works
-        </p>
-        <h2 className="text-4xl md:text-5xl font-bold text-white text-center mb-5">
-          Yield stripping,{" "}
-          <span className="text-gray-400 font-normal">simplified.</span>
-        </h2>
-        <p className="text-gray-400 text-lg text-center max-w-xl mx-auto mb-20">
-          Three steps to unlock fixed income or leveraged yield on your DeFi assets.
-        </p>
+        <div className="flex justify-center mb-10">
+          <div className="px-5 py-2 border-2 border-teal-400 shadow-[0_0_20px_rgba(20,184,166,0.5),0_0_60px_rgba(20,184,166,0.3),inset_0_0_20px_rgba(20,184,166,0.1)]">
+            <h2 className="text-base md:text-lg font-bold text-teal-400 text-center">
+              How It Works?
+            </h2>
+          </div>
+        </div>
 
         {/* Bento grid layout */}
         <div className="grid md:grid-cols-3 gap-4 md:gap-5">
           {/* Step 1 */}
-          <div className="p-8 border border-white/[0.08] bg-white/[0.02] flex flex-col justify-end hover:border-teal-500/20 transition-colors">
+          <div className="relative p-8 border border-white/[0.08] bg-white/[0.02] flex flex-col justify-end hover:border-teal-500/20 transition-colors">
+            <span className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-teal-400" />
+            <span className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-teal-400" />
+            <span className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-teal-400" />
+            <span className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-teal-400" />
             <img src="/icon/logo1section2.png" alt="Deposit Assets" className="w-full h-auto rounded-xl mb-5" />
             <h3 className="text-lg font-bold text-white uppercase tracking-wide mb-2">Deposit Assets</h3>
             <p className="text-gray-400 text-sm leading-relaxed">
@@ -162,7 +155,11 @@ function HowItWorksSection() {
           </div>
 
           {/* Step 2 */}
-          <div className="p-8 border border-white/[0.08] bg-white/[0.02] flex flex-col justify-end hover:border-teal-500/20 transition-colors">
+          <div className="relative p-8 border border-white/[0.08] bg-white/[0.02] flex flex-col justify-end hover:border-teal-500/20 transition-colors">
+            <span className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-teal-400" />
+            <span className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-teal-400" />
+            <span className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-teal-400" />
+            <span className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-teal-400" />
             <h3 className="text-lg font-bold text-white uppercase tracking-wide mb-2">Receive PT & YT</h3>
             <p className="text-gray-400 text-sm leading-relaxed mb-5">
               Your deposit is split into Principal Tokens (PT) for fixed yield
@@ -172,7 +169,11 @@ function HowItWorksSection() {
           </div>
 
           {/* Step 3 */}
-          <div className="p-8 border border-white/[0.08] bg-white/[0.02] flex flex-col justify-end hover:border-teal-500/20 transition-colors">
+          <div className="relative p-8 border border-white/[0.08] bg-white/[0.02] flex flex-col justify-end hover:border-teal-500/20 transition-colors">
+            <span className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-teal-400" />
+            <span className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-teal-400" />
+            <span className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-teal-400" />
+            <span className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-teal-400" />
             <img src="/icon/logo2section2.png" alt="Earn Your Way" className="w-full h-auto rounded-xl mb-5" />
             <h3 className="text-lg font-bold text-white uppercase tracking-wide mb-2">Earn Your Way</h3>
             <p className="text-gray-400 text-sm leading-relaxed">
@@ -214,7 +215,7 @@ function WhyOrlanceSection() {
   ];
 
   return (
-    <section className="pt-4 pb-32 px-6 bg-black">
+    <section className="pt-4 pb-32 px-6 bg-black" style={{ fontFamily: "'Satoshi', sans-serif" }}>
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-center mb-10">
           <div className="px-5 py-2 border-2 border-teal-400 shadow-[0_0_20px_rgba(20,184,166,0.5),0_0_60px_rgba(20,184,166,0.3),inset_0_0_20px_rgba(20,184,166,0.1)]">
@@ -241,26 +242,17 @@ function WhyOrlanceSection() {
             </div>
           </div>
 
-          {/* Right — 4 feature cards stacked */}
-          <div className="flex flex-col gap-4">
-            {features.map((f, i) => (
-              <div
-                key={f.title}
-                className="p-5 border border-teal-500/40 bg-white/[0.02] hover:border-teal-400/60 transition-colors"
-              >
-                <h3 className="text-base font-bold text-white mb-1">
-                  {i + 1}. {f.title}
-                </h3>
-                <p className="text-gray-400 text-sm leading-relaxed">{f.description}</p>
-              </div>
-            ))}
-          </div>
+          {/* Right — 4 feature cards stacked with sweep animation */}
+          <AnimatedFeatureCards features={features} />
         </div>
       </div>
     </section>
   );
 }
 
+/* ─────────────────────────────────────────────────────────────
+   Section 4: Products
+───────────────────────────────────────────────────────────── */
 /* ─────────────────────────────────────────────────────────────
    Section 4: Products
 ───────────────────────────────────────────────────────────── */
@@ -293,7 +285,7 @@ function ProductsSection() {
               </svg>
             </div>
             <h3 className="text-xl font-bold text-white mb-3">Pools</h3>
-            <p className="text-gray-400 text-sm leading-relaxed mb-6 flex-1">
+            <p className="text-gray-200 text-base leading-relaxed mb-6 flex-1" style={{ fontWeight: 650 }}>
               Deposit yield-bearing assets and split them into Principal Tokens
               (fixed yield) and Yield Tokens (variable/leveraged). Choose
               maturities from 1 to 3 months.
@@ -327,7 +319,7 @@ function ProductsSection() {
               </svg>
             </div>
             <h3 className="text-xl font-bold text-white mb-3">Vault</h3>
-            <p className="text-gray-400 text-sm leading-relaxed mb-6 flex-1">
+            <p className="text-gray-200 text-base leading-relaxed mb-6 flex-1" style={{ fontWeight: 650 }}>
               Deposit once and let Orlance handle the rest. The auto-roller vault
               automatically compounds and rolls your position at maturity —
               set it and forget it.
@@ -360,7 +352,7 @@ function ProductsSection() {
               </svg>
             </div>
             <h3 className="text-xl font-bold text-white mb-3">Lottery</h3>
-            <p className="text-gray-400 text-sm leading-relaxed mb-6 flex-1">
+            <p className="text-gray-200 text-base leading-relaxed mb-6 flex-1" style={{ fontWeight: 650 }}>
               Deposit into the no-loss lottery pool. Your principal is always safe —
               the yield generated by the pool funds the prize pot, giving you a
               chance to win big, risk-free.
@@ -381,86 +373,6 @@ function ProductsSection() {
               <span className="group-hover:translate-x-1 transition-transform inline-block">→</span>
             </Link>
           </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─────────────────────────────────────────────────────────────
-   Section 5: Security & Trust
-───────────────────────────────────────────────────────────── */
-function SecuritySection() {
-  const items = [
-    {
-      icon: (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-        </svg>
-      ),
-      title: "Non-custodial",
-      description: "You always hold your keys. Orlance never takes custody of your funds.",
-    },
-    {
-      icon: (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <path d="M16 18l6-6-6-6" />
-          <path d="M8 6l-6 6 6 6" />
-        </svg>
-      ),
-      title: "Open Source",
-      description: "All smart contracts are publicly verifiable on-chain.",
-    },
-    {
-      icon: (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <path d="M12 2L2 7l10 5 10-5-10-5z" />
-          <path d="M2 17l10 5 10-5" />
-          <path d="M2 12l10 5 10-5" />
-        </svg>
-      ),
-      title: "Arbitrum L2",
-      description: "Secured by Ethereum with low gas fees and fast transactions.",
-    },
-    {
-      icon: (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-          <polyline points="22 4 12 14.01 9 11.01" />
-        </svg>
-      ),
-      title: "Audited",
-      description: "Smart contracts reviewed for security vulnerabilities.",
-    },
-  ];
-
-  return (
-    <section className="py-32 px-6 bg-black">
-      <div className="max-w-6xl mx-auto">
-        <p className="text-teal-400 text-sm font-medium uppercase tracking-widest text-center mb-3">
-          Security
-        </p>
-        <h2 className="text-4xl md:text-5xl font-bold text-white text-center mb-5">
-          Built on{" "}
-          <span className="text-gray-400 font-normal">trust.</span>
-        </h2>
-        <p className="text-gray-400 text-lg text-center max-w-xl mx-auto mb-20">
-          Your assets are protected by battle-tested smart contracts on Arbitrum.
-        </p>
-
-        <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-6">
-          {items.map((item) => (
-            <div
-              key={item.title}
-              className="text-center p-6 rounded-2xl border border-white/[0.08] bg-white/[0.02] hover:border-teal-500/20 transition-colors"
-            >
-              <div className="w-12 h-12 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400 mx-auto mb-4">
-                {item.icon}
-              </div>
-              <h3 className="text-base font-semibold text-white mb-2">{item.title}</h3>
-              <p className="text-gray-400 text-sm leading-relaxed">{item.description}</p>
-            </div>
-          ))}
         </div>
       </div>
     </section>
@@ -583,7 +495,6 @@ export default function Home() {
       <HowItWorksSection />
       <WhyOrlanceSection />
       <ProductsSection />
-      <SecuritySection />
       <Footer />
     </div>
   );
