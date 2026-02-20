@@ -265,55 +265,49 @@ function ProductsSection() {
   return (
     <section id="products" className="pt-4 pb-32 px-6 bg-black" style={{ fontFamily: "'Satoshi', sans-serif" }}>
       <div className="max-w-6xl mx-auto">
-        <div className="flex justify-center mb-10">
-          <h2 className="text-4xl md:text-5xl font-bold text-teal-400 uppercase tracking-tight" style={{ transform: "scaleY(2.5)", transformOrigin: "top" }}>
+        <div className="flex justify-center mb-32">
+          <h2 className="text-4xl md:text-5xl font-bold text-teal-400 uppercase tracking-tight" style={{ transform: "scaleY(2.5)", transformOrigin: "top", fontFamily: "var(--font-orbitron)", fontWeight: 900 }}>
             OUR PRODUCTS
           </h2>
         </div>
 
-        <div className="mt-16">
-        <div className="grid md:grid-cols-3 gap-4 md:gap-5">
-          {/* ── Pools card ── */}
-          <Link href="/dashboard" className="relative p-8 border border-white/[0.08] bg-white/[0.02] flex flex-col hover:border-teal-400 hover:shadow-[0_0_20px_rgba(20,184,166,0.4),0_0_60px_rgba(20,184,166,0.15)] transition-all duration-300 cursor-pointer">
-            <span className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-teal-400" />
-            <span className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-teal-400" />
-            <span className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-teal-400" />
-            <span className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-teal-400" />
-            <img src="/icon/pools.png" alt="Pools" className="w-full h-56 object-contain rounded-xl mb-5" />
-            <h3 className="text-lg font-bold text-white uppercase tracking-wide mb-2">Pools</h3>
-            <p className="text-gray-400 text-sm leading-relaxed">
+        <div className="grid md:grid-cols-3 gap-12 md:gap-16">
+          {/* ── Pools ── */}
+          <div className="flex flex-col items-center text-center">
+            <img src="/icon/pools.png" alt="Pools" className="w-full h-64 object-contain mb-8" />
+            <h3 className="text-3xl font-bold text-white uppercase tracking-wide mb-3">Pools</h3>
+            <p className="text-gray-400 text-sm leading-relaxed max-w-xs mb-6">
               Split yield-bearing assets into fixed and variable yield tokens.
             </p>
-          </Link>
+            <Link href="/dashboard" className="px-6 py-2.5 bg-teal-500 hover:bg-teal-400 text-white text-sm font-medium transition-colors">
+              Open Pools
+            </Link>
+          </div>
 
-          {/* ── Vault card ── */}
-          <Link href="/dashboard/vault" className="relative p-8 border border-white/[0.08] bg-white/[0.02] flex flex-col hover:border-teal-400 hover:shadow-[0_0_20px_rgba(20,184,166,0.4),0_0_60px_rgba(20,184,166,0.15)] transition-all duration-300 cursor-pointer">
-            <span className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-teal-400" />
-            <span className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-teal-400" />
-            <span className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-teal-400" />
-            <span className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-teal-400" />
-            <img src="/icon/Vault.png" alt="Vault" className="w-full h-56 object-contain rounded-xl mb-5" />
-            <h3 className="text-lg font-bold text-white uppercase tracking-wide mb-2">Vault</h3>
-            <p className="text-gray-400 text-sm leading-relaxed">
+          {/* ── Vault ── */}
+          <div className="flex flex-col items-center text-center">
+            <img src="/icon/Vault.png" alt="Vault" className="w-full h-64 object-contain mb-8" />
+            <h3 className="text-3xl font-bold text-white uppercase tracking-wide mb-3">Vault</h3>
+            <p className="text-gray-400 text-sm leading-relaxed max-w-xs mb-6">
               Auto-compound and auto-roll your yield — set it and forget it.
             </p>
-          </Link>
+            <Link href="/dashboard/vault" className="px-6 py-2.5 bg-teal-500 hover:bg-teal-400 text-white text-sm font-medium transition-colors">
+              Open Vault
+            </Link>
+          </div>
 
-          {/* ── Lottery card ── */}
-          <Link href="/dashboard/lottery" className="relative p-8 border border-white/[0.08] bg-white/[0.02] flex flex-col hover:border-teal-400 hover:shadow-[0_0_20px_rgba(20,184,166,0.4),0_0_60px_rgba(20,184,166,0.15)] transition-all duration-300 cursor-pointer">
-            <span className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-teal-400" />
-            <span className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-teal-400" />
-            <span className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-teal-400" />
-            <span className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-teal-400" />
-            <img src="/icon/lottery.png" alt="Lottery" className="w-full h-56 object-contain rounded-xl mb-5" />
-            <h3 className="text-lg font-bold text-white uppercase tracking-wide mb-2">Lottery</h3>
-            <p className="text-gray-400 text-sm leading-relaxed">
+          {/* ── Lottery ── */}
+          <div className="flex flex-col items-center text-center">
+            <img src="/icon/lottery.png" alt="Lottery" className="w-full h-64 object-contain mb-8" />
+            <h3 className="text-3xl font-bold text-white uppercase tracking-wide mb-3">Lottery</h3>
+            <p className="text-gray-400 text-sm leading-relaxed max-w-xs mb-6">
               No-loss prize pool — your principal stays safe, yield funds the prize.
             </p>
-          </Link>
+            <Link href="/dashboard/lottery" className="px-6 py-2.5 bg-teal-500 hover:bg-teal-400 text-white text-sm font-medium transition-colors">
+              Try Lottery
+            </Link>
+          </div>
         </div>
-        </div>
-        <p className="text-gray-500 text-xs text-center mt-4">Click on a card to go to its page</p>
       </div>
     </section>
   );
