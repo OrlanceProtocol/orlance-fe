@@ -40,12 +40,12 @@ export default function VaultPositionCard({ data }: { data: VaultData }) {
           )}
         </Row>
 
-        <Row label="OstETH Balance">
+        <Row label="OAS Balance">
           {isLoading ? (
             <Skeleton />
           ) : (
             <span className="text-white font-medium">
-              {formatted.userShares}
+              {formatted.userShares} OAS
             </span>
           )}
         </Row>
@@ -61,7 +61,7 @@ export default function VaultPositionCard({ data }: { data: VaultData }) {
         </Row>
 
         <div className="border-t border-gray-700/30 pt-3">
-          <Row label="OstETH Price">
+          <Row label="OAS Price">
             {isLoading ? (
               <Skeleton />
             ) : (
@@ -98,6 +98,13 @@ export default function VaultPositionCard({ data }: { data: VaultData }) {
         <p className="text-xs text-gray-500 mt-2">
           Yield is auto-compounded at each roll-over
         </p>
+        {!isLoading && (
+          <p className={`text-xs mt-1 ${derived.canRollOverNow ? "text-yellow-300" : "text-gray-500"}`}>
+            {derived.canRollOverNow
+              ? "Current maturity reached. Roll-over will be processed automatically by your backend keeper."
+              : "Waiting for maturity before automatic roll-over is processed."}
+          </p>
+        )}
       </div>
     </div>
   );

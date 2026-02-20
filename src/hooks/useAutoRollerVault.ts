@@ -4,23 +4,20 @@ import { useMemo } from "react";
 import { zeroAddress } from "viem";
 import { useAccount, useReadContracts } from "wagmi";
 import {
-  autoRollerVaultAbi,
+  ammAbi,
+  autoRollerAbi,
   erc20Abi,
   ORLANCE_DEPLOYMENT,
 } from "@/lib/orlance/contracts";
-import { safeBigInt, toEtherNumber, toFixedString } from "@/lib/format";
+import { clampApr, safeBigInt, toEtherNumber, toFixedString } from "@/lib/format";
 
-const MOCK_APY = 4.82;
-const MOCK_ROLL_OVER_DAYS = 30;
-
-function getMockNextRollOver(): number {
-  return Math.floor(Date.now() / 1000) + MOCK_ROLL_OVER_DAYS * 24 * 60 * 60;
-}
+const secondsInYear = 365 * 24 * 60 * 60;
 
 export function useAutoRollerVault() {
   const { address, isConnected } = useAccount();
   const userAddress = address ?? zeroAddress;
-  const vaultAddress = ORLANCE_DEPLOYMENT.addresses.autoRollerVault;
+  const vaultAddress = ORLANCE_DEPLOYMENT.addresses.autoRoller;
+  const isConfigured = vaultAddress.toLowerCase() !== zeroAddress.toLowerCase();
 
   const contractReads = useReadContracts({
     allowFailure: true,
@@ -33,23 +30,23 @@ export function useAutoRollerVault() {
       },
       {
         address: vaultAddress,
-        abi: autoRollerVaultAbi,
+        abi: autoRollerAbi,
         functionName: "balanceOf",
         args: [userAddress],
       },
       {
         address: vaultAddress,
-        abi: autoRollerVaultAbi,
+        abi: autoRollerAbi,
         functionName: "totalAssets",
       },
       {
         address: vaultAddress,
-        abi: autoRollerVaultAbi,
+        abi: autoRollerAbi,
         functionName: "totalSupply",
       },
       {
         address: vaultAddress,
-        abi: autoRollerVaultAbi,
+        abi: autoRollerAbi,
         functionName: "nextRollOver",
       },
       {
@@ -58,9 +55,20 @@ export function useAutoRollerVault() {
         functionName: "allowance",
         args: [userAddress, vaultAddress],
       },
+      {
+        address: ORLANCE_DEPLOYMENT.addresses.amm,
+        abi: ammAbi,
+        functionName: "reserve0",
+      },
+      {
+        address: ORLANCE_DEPLOYMENT.addresses.amm,
+        abi: ammAbi,
+        functionName: "reserve1",
+      },
     ],
     query: {
       refetchInterval: 10_000,
+      enabled: isConfigured,
     },
   });
 
@@ -76,44 +84,54 @@ export function useAutoRollerVault() {
       totalSupply: safeBigInt(results, 3),
       nextRollOver: safeBigInt(results, 4),
       stEthAllowance: safeBigInt(results, 5),
+      reserveTps: safeBigInt(results, 6),
+      reserveStEth: safeBigInt(results, 7),
     };
   }, [contractReads.data]);
 
   const derived = useMemo(() => {
+    const nowTs = Math.floor(Date.now() / 1000);
     const totalAssets = toEtherNumber(readValues.totalAssets);
     const totalSupply = toEtherNumber(readValues.totalSupply);
     const userShares = toEtherNumber(readValues.userShares);
+    const reserveTps = toEtherNumber(readValues.reserveTps);
+    const reserveStEth = toEtherNumber(readValues.reserveStEth);
 
     const sharePrice = totalSupply > 0 ? totalAssets / totalSupply : 1;
     const userDepositValue = userShares * sharePrice;
-
-    // Earnings = current value - shares (assuming 1:1 initial deposit)
     const earnings = Math.max(userDepositValue - userShares, 0);
 
-    // Use mock APY since contract is not deployed yet
-    const estimatedApy = MOCK_APY;
-
-    const isAutoCompounding = totalAssets > 0 || userShares > 0;
-
-    // Use on-chain nextRollOver if available, otherwise mock
     const nextRollOverTs =
       readValues.nextRollOver > 0n
         ? Number(readValues.nextRollOver)
-        : getMockNextRollOver();
+        : ORLANCE_DEPLOYMENT.maturityTimestamp || nowTs;
+    const secondsToRollOver = Math.max(nextRollOverTs - nowTs, 0);
+    const yearsToRollOver = Math.max(secondsToRollOver / secondsInYear, 1 / 365);
+    const canRollOverNow = nextRollOverTs > 0 && nowTs >= nextRollOverTs;
+
+    const tpsPriceInStEth = reserveTps > 0 ? reserveStEth / reserveTps : 0;
+    const estimatedApy =
+      tpsPriceInStEth > 0
+        ? clampApr((((1 / tpsPriceInStEth) - 1) / yearsToRollOver) * 100)
+        : 0;
 
     return {
       sharePrice,
       userDepositValue,
       earnings,
       estimatedApy,
-      isAutoCompounding,
       nextRollOverTs,
+      secondsToRollOver,
+      canRollOverNow,
+      isAutoCompounding: isConfigured && (totalAssets > 0 || userShares > 0),
     };
-  }, [readValues]);
+  }, [isConfigured, readValues]);
 
   return {
     isConnected,
+    isConfigured,
     address,
+    vaultAddress,
     isLoading: contractReads.isLoading,
     refetch: contractReads.refetch,
     balances: {
@@ -130,12 +148,13 @@ export function useAutoRollerVault() {
     formatted: {
       stEth: toFixedString(toEtherNumber(readValues.stEthBalance)),
       userShares: toFixedString(toEtherNumber(readValues.userShares)),
-      totalAssets: toFixedString(toEtherNumber(readValues.totalAssets), 2),
-      totalSupply: toFixedString(toEtherNumber(readValues.totalSupply), 2),
+      totalAssets: toFixedString(toEtherNumber(readValues.totalAssets), 6),
+      totalSupply: toFixedString(toEtherNumber(readValues.totalSupply), 6),
       sharePrice: toFixedString(derived.sharePrice, 6),
-      userDepositValue: toFixedString(derived.userDepositValue),
+      userDepositValue: toFixedString(derived.userDepositValue, 6),
       earnings: toFixedString(derived.earnings, 6),
       estimatedApy: toFixedString(derived.estimatedApy, 2),
     },
   };
 }
+

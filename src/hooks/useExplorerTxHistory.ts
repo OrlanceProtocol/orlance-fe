@@ -55,6 +55,8 @@ function decodeAction(functionName: string | undefined, to: string): string {
   if (name.includes("deposit(")) return "Deposit";
   if (name.includes("zapredeem")) return "Redeem TPS";
   if (name.includes("claimyield")) return "Claim Yield";
+  if (name.includes("drawwinner")) return "Draw Winner";
+  if (name.includes("rollover(")) return "Roll Over";
   if (name.includes("swap(")) return "Swap";
   if (name.includes("addliquidity")) return "Add Liquidity";
   if (name.includes("removeliquidity")) return "Remove Liquidity";
@@ -62,6 +64,10 @@ function decodeAction(functionName: string | undefined, to: string): string {
   if (toLower === ORLANCE_DEPLOYMENT.addresses.router.toLowerCase()) return "Router Call";
   if (toLower === ORLANCE_DEPLOYMENT.addresses.vault.toLowerCase()) return "Vault Call";
   if (toLower === ORLANCE_DEPLOYMENT.addresses.amm.toLowerCase()) return "AMM Call";
+  if (toLower === ORLANCE_DEPLOYMENT.addresses.autoRoller.toLowerCase())
+    return "Auto-Roller Call";
+  if (toLower === ORLANCE_DEPLOYMENT.addresses.lottery.toLowerCase())
+    return "Lottery Call";
   if (toLower === ORLANCE_DEPLOYMENT.addresses.tps.toLowerCase()) return "TPS Transfer";
   if (toLower === ORLANCE_DEPLOYMENT.addresses.tys.toLowerCase()) return "TYS Transfer";
   if (toLower === ORLANCE_DEPLOYMENT.addresses.stEth.toLowerCase()) return "stETH Transfer";

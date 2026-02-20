@@ -7,6 +7,7 @@ interface TokenInputProps {
   amount: string;
   onAmountChange: (val: string) => void;
   balance: number | string;
+  tokenLocked?: boolean;
 }
 
 export default function TokenInput({
@@ -15,6 +16,7 @@ export default function TokenInput({
   amount,
   onAmountChange,
   balance,
+  tokenLocked = false,
 }: TokenInputProps) {
   const [selectedPercent, setSelectedPercent] = useState<number | null>(null);
   const percentages = [
@@ -33,14 +35,25 @@ export default function TokenInput({
       <div className="flex items-center gap-2">
         <span className="text-sm text-gray-400 w-16 shrink-0">Token</span>
         <button
-          onClick={() => onSelectToken(selectedToken === "ETH" ? "stETH" : "ETH")}
-          className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-gray-700/30 bg-[#1a2332] hover:bg-[#1e2a3a] transition-colors cursor-pointer"
+          onClick={() => {
+            if (!tokenLocked) {
+              onSelectToken(selectedToken === "ETH" ? "stETH" : "ETH");
+            }
+          }}
+          className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border border-gray-700/30 transition-colors ${
+            tokenLocked
+              ? "bg-[#1a2332]/70 text-gray-400 cursor-not-allowed"
+              : "bg-[#1a2332] hover:bg-[#1e2a3a] cursor-pointer"
+          }`}
+          disabled={tokenLocked}
         >
           <Image src="/icon/eth.png" alt={selectedToken} width={20} height={20} className="rounded-full" />
           <span className="text-sm font-medium text-white">{selectedToken}</span>
-          <svg width="12" height="12" viewBox="0 0 12 12" className="text-gray-400">
-            <path d="M3 5L6 8L9 5" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-          </svg>
+          {!tokenLocked && (
+            <svg width="12" height="12" viewBox="0 0 12 12" className="text-gray-400">
+              <path d="M3 5L6 8L9 5" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+            </svg>
+          )}
         </button>
         <span className="text-sm text-gray-400">
           Balance: {balance} {selectedToken}

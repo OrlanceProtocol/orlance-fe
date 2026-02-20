@@ -13,7 +13,14 @@ export default function MintTab({ pool }: { pool: Pool }) {
   const [amount, setAmount] = useState("");
   const [selectedToken, setSelectedToken] = useState<"ETH" | "stETH">("ETH");
   const { address } = useAccount();
-  const onchain = useOrlancePoolData();
+  const onchain = useOrlancePoolData({
+    maturityTimestamp: pool.maturityTimestamp,
+    addresses: {
+      tps: pool.addresses.tps,
+      tys: pool.addresses.tys,
+      amm: pool.addresses.amm,
+    },
+  });
 
   const parsedAmount = useMemo(() => {
     try {
@@ -28,7 +35,7 @@ export default function MintTab({ pool }: { pool: Pool }) {
     address: ORLANCE_DEPLOYMENT.addresses.stEth,
     functionName: "allowance",
     args: [address ?? ORLANCE_DEPLOYMENT.addresses.vault, ORLANCE_DEPLOYMENT.addresses.vault],
-    query: { enabled: selectedToken === "stETH" && Boolean(address) },
+    query: { enabled: Boolean(address) && selectedToken === "stETH" },
   });
 
   const approveWrite = useWriteContract();
@@ -60,19 +67,20 @@ export default function MintTab({ pool }: { pool: Pool }) {
         abi: routerAbi,
         address: ORLANCE_DEPLOYMENT.addresses.router,
         functionName: "zapDeposit",
-        args: [BigInt(ORLANCE_DEPLOYMENT.maturityTimestamp)],
+        args: [BigInt(pool.maturityTimestamp)],
         value: parsedAmount,
         chainId: ORLANCE_DEPLOYMENT.chainId,
       });
-    } else {
-      await mintWrite.writeContractAsync({
-        abi: vaultAbi,
-        address: ORLANCE_DEPLOYMENT.addresses.vault,
-        functionName: "deposit",
-        args: [BigInt(ORLANCE_DEPLOYMENT.maturityTimestamp), parsedAmount],
-        chainId: ORLANCE_DEPLOYMENT.chainId,
-      });
+      return;
     }
+
+    await mintWrite.writeContractAsync({
+      abi: vaultAbi,
+      address: ORLANCE_DEPLOYMENT.addresses.vault,
+      functionName: "deposit",
+      args: [BigInt(pool.maturityTimestamp), parsedAmount],
+      chainId: ORLANCE_DEPLOYMENT.chainId,
+    });
   };
 
   const balance = selectedToken === "ETH" ? onchain.formatted.eth : onchain.formatted.stEth;
@@ -115,7 +123,7 @@ export default function MintTab({ pool }: { pool: Pool }) {
       </div>
 
       <div className="mb-4 space-y-2 text-sm">
-        {selectedToken === "stETH" && needsApproval && (
+        {needsApproval && (
           <div className="flex justify-center">
             <ApproveButton
               approved={false}
@@ -125,6 +133,11 @@ export default function MintTab({ pool }: { pool: Pool }) {
               }}
             />
           </div>
+        )}
+        {selectedToken === "ETH" && (
+          <p className="text-gray-500 text-center">
+            Uses Router `zapDeposit` (ETH -&gt; stETH -&gt; Vault) in one tx.
+          </p>
         )}
         {approveWrite.error && <p className="text-red-400 text-center">{approveWrite.error.message}</p>}
         {mintWrite.error && <p className="text-red-400 text-center">{mintWrite.error.message}</p>}

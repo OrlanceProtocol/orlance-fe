@@ -13,7 +13,14 @@ export default function RedeemTab({ pool }: { pool: Pool }) {
   const [redeemAmount, setRedeemAmount] = useState("");
   const [redeemToken, setRedeemToken] = useState<"ETH" | "stETH">("stETH");
   const { address } = useAccount();
-  const onchain = useOrlancePoolData();
+  const onchain = useOrlancePoolData({
+    maturityTimestamp: pool.maturityTimestamp,
+    addresses: {
+      tps: pool.addresses.tps,
+      tys: pool.addresses.tys,
+      amm: pool.addresses.amm,
+    },
+  });
 
   const parsedAmount = useMemo(() => {
     try {
@@ -34,7 +41,7 @@ export default function RedeemTab({ pool }: { pool: Pool }) {
       abi: routerAbi,
       address: ORLANCE_DEPLOYMENT.addresses.router,
       functionName: "zapRedeem",
-      args: [BigInt(ORLANCE_DEPLOYMENT.maturityTimestamp), parsedAmount],
+      args: [BigInt(pool.maturityTimestamp), parsedAmount],
       chainId: ORLANCE_DEPLOYMENT.chainId,
     });
   };
@@ -45,7 +52,7 @@ export default function RedeemTab({ pool }: { pool: Pool }) {
       abi: vaultAbi,
       address: ORLANCE_DEPLOYMENT.addresses.vault,
       functionName: "claimYield",
-      args: [BigInt(ORLANCE_DEPLOYMENT.maturityTimestamp)],
+      args: [BigInt(pool.maturityTimestamp)],
       chainId: ORLANCE_DEPLOYMENT.chainId,
     });
   };

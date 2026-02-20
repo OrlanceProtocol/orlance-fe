@@ -12,7 +12,8 @@ interface PoolSummaryProps {
   maxLpAPR: number;
   totalTVL: string;
   balance: string;
-  availableToDeposit: string;
+  availableEth: string;
+  availableStEth: string;
   pools: PoolRowData[];
 }
 
@@ -23,7 +24,8 @@ export default function PoolSummaryRow({
   maxLpAPR,
   totalTVL,
   balance,
-  availableToDeposit,
+  availableEth,
+  availableStEth,
   pools,
 }: PoolSummaryProps) {
   const [expanded, setExpanded] = useState(true);
@@ -83,8 +85,22 @@ export default function PoolSummaryRow({
         </div>
 
         {/* Available to Deposit */}
-        <div className="px-2 text-right">
-          <span className="text-base font-medium text-white">{availableToDeposit}</span>
+        <div className="px-2">
+          <div className="flex flex-col gap-1 items-end">
+            <div className="flex items-center gap-2">
+              <span className="text-base text-gray-300">{availableEth}</span>
+              <span className="text-base font-medium text-white">ETH</span>
+              <Image src="/icon/eth.png" alt="ETH" width={20} height={20} className="rounded-full" />
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-base text-gray-300">{availableStEth}</span>
+              <span className="text-base font-medium text-white">stETH</span>
+              <span className="w-5 h-5 rounded-full bg-sky-900/50 flex items-center justify-center relative">
+                <Image src="/icon/eth.png" alt="stETH" width={20} height={20} className="rounded-full" />
+                <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-sky-400 border border-[#1a2332]" />
+              </span>
+            </div>
+          </div>
         </div>
 
         {/* LP APR */}

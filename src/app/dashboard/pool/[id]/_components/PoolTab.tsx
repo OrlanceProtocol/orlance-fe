@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { parseEther } from "viem";
+import { parseEther, zeroAddress } from "viem";
 import { useAccount, useReadContract, useWaitForTransactionReceipt, useWriteContract } from "wagmi";
 import type { Pool } from "@/data/pools";
 import SectionHeader from "./SectionHeader";
@@ -16,7 +16,16 @@ export default function PoolTab({ pool }: { pool: Pool }) {
   const [poolStEthAmount, setPoolStEthAmount] = useState("");
   const [removeLpAmount, setRemoveLpAmount] = useState("");
   const { address } = useAccount();
-  const onchain = useOrlancePoolData();
+  const ammAddress = pool.addresses.amm;
+  const isAmmConfigured = ammAddress.toLowerCase() !== zeroAddress.toLowerCase();
+  const onchain = useOrlancePoolData({
+    maturityTimestamp: pool.maturityTimestamp,
+    addresses: {
+      tps: pool.addresses.tps,
+      tys: pool.addresses.tys,
+      amm: pool.addresses.amm,
+    },
+  });
 
   const parsedPrincipalAmount = useMemo(() => {
     try {
@@ -44,18 +53,18 @@ export default function PoolTab({ pool }: { pool: Pool }) {
 
   const tpsAllowanceQuery = useReadContract({
     abi: erc20Abi,
-    address: ORLANCE_DEPLOYMENT.addresses.tps,
+    address: pool.addresses.tps,
     functionName: "allowance",
-    args: [address ?? ORLANCE_DEPLOYMENT.addresses.amm, ORLANCE_DEPLOYMENT.addresses.amm],
-    query: { enabled: Boolean(address) && poolSubTab === "add" },
+    args: [address ?? ammAddress, ammAddress],
+    query: { enabled: Boolean(address) && poolSubTab === "add" && isAmmConfigured },
   });
 
   const stEthAllowanceQuery = useReadContract({
     abi: erc20Abi,
     address: ORLANCE_DEPLOYMENT.addresses.stEth,
     functionName: "allowance",
-    args: [address ?? ORLANCE_DEPLOYMENT.addresses.amm, ORLANCE_DEPLOYMENT.addresses.amm],
-    query: { enabled: Boolean(address) && poolSubTab === "add" },
+    args: [address ?? ammAddress, ammAddress],
+    query: { enabled: Boolean(address) && poolSubTab === "add" && isAmmConfigured },
   });
 
   const approveWrite = useWriteContract();
@@ -75,34 +84,34 @@ export default function PoolTab({ pool }: { pool: Pool }) {
     stEthAllowanceQuery.data < parsedStEthAmount;
 
   const handleApproveTps = async () => {
-    if (!address || parsedPrincipalAmount <= 0n) return;
+    if (!address || parsedPrincipalAmount <= 0n || !isAmmConfigured) return;
     await approveWrite.writeContractAsync({
       abi: erc20Abi,
-      address: ORLANCE_DEPLOYMENT.addresses.tps,
+      address: pool.addresses.tps,
       functionName: "approve",
-      args: [ORLANCE_DEPLOYMENT.addresses.amm, parsedPrincipalAmount],
+      args: [ammAddress, parsedPrincipalAmount],
       chainId: ORLANCE_DEPLOYMENT.chainId,
     });
   };
 
   const handleApproveStEth = async () => {
-    if (!address || parsedStEthAmount <= 0n) return;
+    if (!address || parsedStEthAmount <= 0n || !isAmmConfigured) return;
     await approveWrite.writeContractAsync({
       abi: erc20Abi,
       address: ORLANCE_DEPLOYMENT.addresses.stEth,
       functionName: "approve",
-      args: [ORLANCE_DEPLOYMENT.addresses.amm, parsedStEthAmount],
+      args: [ammAddress, parsedStEthAmount],
       chainId: ORLANCE_DEPLOYMENT.chainId,
     });
   };
 
   const handleExecute = async () => {
-    if (!address) return;
+    if (!address || !isAmmConfigured) return;
     if (poolSubTab === "add") {
       if (parsedPrincipalAmount <= 0n || parsedStEthAmount <= 0n) return;
       await actionWrite.writeContractAsync({
         abi: ammAbi,
-        address: ORLANCE_DEPLOYMENT.addresses.amm,
+        address: ammAddress,
         functionName: "addLiquidity",
         args: [parsedPrincipalAmount, parsedStEthAmount],
         chainId: ORLANCE_DEPLOYMENT.chainId,
@@ -113,7 +122,7 @@ export default function PoolTab({ pool }: { pool: Pool }) {
     if (parsedLpAmount <= 0n) return;
     await actionWrite.writeContractAsync({
       abi: ammAbi,
-      address: ORLANCE_DEPLOYMENT.addresses.amm,
+      address: ammAddress,
       functionName: "removeLiquidity",
       args: [parsedLpAmount],
       chainId: ORLANCE_DEPLOYMENT.chainId,
@@ -157,6 +166,12 @@ export default function PoolTab({ pool }: { pool: Pool }) {
           </button>
         </div>
       </div>
+
+      {!isAmmConfigured && (
+        <div className="rounded-xl border border-yellow-500/30 bg-yellow-500/10 px-4 py-3 text-sm text-yellow-200 mb-6">
+          No AMM is configured for this maturity. Swap/Pool actions are available after deploying an AMM for this specific pool.
+        </div>
+      )}
 
       <div className="rounded-xl border border-gray-700/30 p-4 bg-[#151f2e] mb-6">
         <p className="text-base font-semibold text-white mb-2">Pool Ratio (TPS / stETH)</p>
@@ -251,6 +266,7 @@ export default function PoolTab({ pool }: { pool: Pool }) {
 
       <ExecuteButton
         enabled={
+          isAmmConfigured &&
           Boolean(address) &&
           (poolSubTab === "add"
             ? parsedPrincipalAmount > 0n &&

@@ -7,6 +7,7 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 const NAV_ITEMS = [
   { label: "Pools", href: "/dashboard", match: (p: string) => p === "/dashboard" || p.startsWith("/dashboard/pool") },
   { label: "Vault", href: "/dashboard/vault", match: (p: string) => p.startsWith("/dashboard/vault") },
+  { label: "Lottery", href: "/dashboard/lottery", match: (p: string) => p.startsWith("/dashboard/lottery") },
 ] as const;
 
 export default function Header() {

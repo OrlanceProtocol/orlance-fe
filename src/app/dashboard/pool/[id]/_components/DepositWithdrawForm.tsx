@@ -42,7 +42,7 @@ export default function DepositWithdrawForm({
         </div>
 
         {advancedTab === "mint" && <MintTab pool={pool} />}
-        {advancedTab === "swap" && <SwapTab />}
+        {advancedTab === "swap" && <SwapTab pool={pool} />}
         {advancedTab === "pool" && <PoolTab pool={pool} />}
         {advancedTab === "redeem" && <RedeemTab pool={pool} />}
       </div>

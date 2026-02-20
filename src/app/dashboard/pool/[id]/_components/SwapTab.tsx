@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
-import { parseEther } from "viem";
+import { parseEther, zeroAddress } from "viem";
 import { useAccount, useReadContract, useWaitForTransactionReceipt, useWriteContract } from "wagmi";
+import type { Pool } from "@/data/pools";
 import SectionHeader from "./SectionHeader";
 import ExecuteButton from "./ExecuteButton";
 import ApproveButton from "./ApproveButton";
@@ -9,11 +10,20 @@ import { useOrlancePoolData } from "@/hooks/useOrlancePoolData";
 
 type SwapToken = "Principals (TPS)" | "stETH";
 
-export default function SwapTab() {
+export default function SwapTab({ pool }: { pool: Pool }) {
   const [swapFromToken, setSwapFromToken] = useState<SwapToken>("Principals (TPS)");
   const [swapAmount, setSwapAmount] = useState("");
   const { address } = useAccount();
-  const onchain = useOrlancePoolData();
+  const ammAddress = pool.addresses.amm;
+  const isAmmConfigured = ammAddress.toLowerCase() !== zeroAddress.toLowerCase();
+  const onchain = useOrlancePoolData({
+    maturityTimestamp: pool.maturityTimestamp,
+    addresses: {
+      tps: pool.addresses.tps,
+      tys: pool.addresses.tys,
+      amm: pool.addresses.amm,
+    },
+  });
 
   const parsedAmount = useMemo(() => {
     try {
@@ -25,7 +35,7 @@ export default function SwapTab() {
 
   const tokenIn =
     swapFromToken === "Principals (TPS)"
-      ? ORLANCE_DEPLOYMENT.addresses.tps
+      ? pool.addresses.tps
       : ORLANCE_DEPLOYMENT.addresses.stEth;
 
   const tokenOutLabel = swapFromToken === "Principals (TPS)" ? "stETH" : "Principals (TPS)";
@@ -34,16 +44,16 @@ export default function SwapTab() {
     abi: erc20Abi,
     address: tokenIn,
     functionName: "allowance",
-    args: [address ?? ORLANCE_DEPLOYMENT.addresses.amm, ORLANCE_DEPLOYMENT.addresses.amm],
-    query: { enabled: Boolean(address) },
+    args: [address ?? ammAddress, ammAddress],
+    query: { enabled: Boolean(address) && isAmmConfigured },
   });
 
   const quoteQuery = useReadContract({
     abi: ammAbi,
-    address: ORLANCE_DEPLOYMENT.addresses.amm,
+    address: ammAddress,
     functionName: "getAmountOut",
     args: [tokenIn, parsedAmount],
-    query: { enabled: parsedAmount > 0n },
+    query: { enabled: parsedAmount > 0n && isAmmConfigured },
   });
 
   const approveWrite = useWriteContract();
@@ -55,21 +65,21 @@ export default function SwapTab() {
     parsedAmount > 0n && typeof allowanceQuery.data === "bigint" && allowanceQuery.data < parsedAmount;
 
   const handleApprove = async () => {
-    if (!address || parsedAmount <= 0n) return;
+    if (!address || parsedAmount <= 0n || !isAmmConfigured) return;
     await approveWrite.writeContractAsync({
       abi: erc20Abi,
       address: tokenIn,
       functionName: "approve",
-      args: [ORLANCE_DEPLOYMENT.addresses.amm, parsedAmount],
+      args: [ammAddress, parsedAmount],
       chainId: ORLANCE_DEPLOYMENT.chainId,
     });
   };
 
   const handleSwap = async () => {
-    if (!address || parsedAmount <= 0n) return;
+    if (!address || parsedAmount <= 0n || !isAmmConfigured) return;
     await swapWrite.writeContractAsync({
       abi: ammAbi,
-      address: ORLANCE_DEPLOYMENT.addresses.amm,
+      address: ammAddress,
       functionName: "swap",
       args: [tokenIn, parsedAmount],
       chainId: ORLANCE_DEPLOYMENT.chainId,
@@ -129,6 +139,12 @@ export default function SwapTab() {
         </div>
       </div>
 
+      {!isAmmConfigured && (
+        <div className="rounded-xl border border-yellow-500/30 bg-yellow-500/10 px-4 py-3 text-sm text-yellow-200 mb-6">
+          No AMM is configured for this maturity. Swap is available after deploying an AMM for this specific pool.
+        </div>
+      )}
+
       <div className="space-y-3">
         {needsApproval && (
           <div className="flex justify-center">
@@ -144,7 +160,7 @@ export default function SwapTab() {
         {approveWrite.error && <p className="text-red-400 text-center">{approveWrite.error.message}</p>}
         {swapWrite.error && <p className="text-red-400 text-center">{swapWrite.error.message}</p>}
         <ExecuteButton
-          enabled={Boolean(address) && parsedAmount > 0n && !needsApproval}
+          enabled={isAmmConfigured && Boolean(address) && parsedAmount > 0n && !needsApproval}
           pending={isBusy}
           label="Swap"
           pendingLabel="Swapping..."
@@ -156,4 +172,3 @@ export default function SwapTab() {
     </>
   );
 }
-

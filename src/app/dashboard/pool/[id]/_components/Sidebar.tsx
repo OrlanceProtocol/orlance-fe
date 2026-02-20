@@ -9,7 +9,14 @@ import { useExplorerTxHistory } from "@/hooks/useExplorerTxHistory";
 
 export default function Sidebar({ pool }: { pool: Pool }) {
   const [activeTab, setActiveTab] = useState<"balance" | "transactions">("balance");
-  const onchain = useOrlancePoolData();
+  const onchain = useOrlancePoolData({
+    maturityTimestamp: pool.maturityTimestamp,
+    addresses: {
+      tps: pool.addresses.tps,
+      tys: pool.addresses.tys,
+      amm: pool.addresses.amm,
+    },
+  });
   const txHistory = useExplorerTxHistory();
 
   const principal = Number(onchain.formatted.tps);

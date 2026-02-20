@@ -28,7 +28,7 @@ export default function VaultStatsBar({ data }: { data: VaultData }) {
 
         {/* Est. APY */}
         <div>
-          <p className="text-sm text-gray-400 mb-1">Est. APY</p>
+          <p className="text-sm text-gray-400 mb-1">Implied APY</p>
           {isLoading ? (
             <Skeleton />
           ) : (
@@ -49,8 +49,13 @@ export default function VaultStatsBar({ data }: { data: VaultData }) {
         </div>
 
         {/* Badge */}
-        <AutoCompoundBadge />
+        <AutoCompoundBadge active={derived.isAutoCompounding && data.isConfigured} />
       </div>
+      {!data.isConfigured && (
+        <p className="text-sm text-yellow-300 mt-4">
+          Auto-Roller contract is not configured. Set `NEXT_PUBLIC_ORLANCE_AUTO_ROLLER`.
+        </p>
+      )}
     </div>
   );
 }

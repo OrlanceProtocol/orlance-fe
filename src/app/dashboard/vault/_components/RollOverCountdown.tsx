@@ -1,12 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-function formatCountdown(targetTs: number): string {
-  const now = Math.floor(Date.now() / 1000);
+function formatCountdown(targetTs: number, now: number): string {
   const diff = Math.max(targetTs - now, 0);
 
-  if (diff === 0) return "Rolling over...";
+  if (diff === 0) return "Ready now";
 
   const days = Math.floor(diff / 86400);
   const hours = Math.floor((diff % 86400) / 3600);
@@ -25,15 +24,19 @@ export default function RollOverCountdown({
 }: {
   targetTimestamp: number;
 }) {
-  const [display, setDisplay] = useState(() => formatCountdown(targetTimestamp));
+  const [nowTs, setNowTs] = useState(() => Math.floor(Date.now() / 1000));
+
+  const display = useMemo(
+    () => formatCountdown(targetTimestamp, nowTs),
+    [targetTimestamp, nowTs],
+  );
 
   useEffect(() => {
-    setDisplay(formatCountdown(targetTimestamp));
     const interval = setInterval(() => {
-      setDisplay(formatCountdown(targetTimestamp));
+      setNowTs(Math.floor(Date.now() / 1000));
     }, 60_000);
     return () => clearInterval(interval);
-  }, [targetTimestamp]);
+  }, []);
 
   return (
     <span className="text-white font-medium tabular-nums">{display}</span>

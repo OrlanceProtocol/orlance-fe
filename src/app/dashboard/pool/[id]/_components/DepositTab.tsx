@@ -10,8 +10,8 @@ import ApproveButton from "./ApproveButton";
 import {
   erc20Abi,
   ORLANCE_DEPLOYMENT,
-  vaultAbi,
   routerAbi,
+  vaultAbi,
 } from "@/lib/orlance/contracts";
 import { useOrlancePoolData } from "@/hooks/useOrlancePoolData";
 
@@ -20,7 +20,14 @@ export default function DepositTab({ pool }: { pool: Pool }) {
   const [selectedToken, setSelectedToken] = useState<"ETH" | "stETH">("ETH");
   const [strategy, setStrategy] = useState<"fixed" | "variable">("fixed");
   const { address } = useAccount();
-  const onchain = useOrlancePoolData();
+  const onchain = useOrlancePoolData({
+    maturityTimestamp: pool.maturityTimestamp,
+    addresses: {
+      tps: pool.addresses.tps,
+      tys: pool.addresses.tys,
+      amm: pool.addresses.amm,
+    },
+  });
 
   const parsedAmount = useMemo(() => {
     try {
@@ -35,7 +42,7 @@ export default function DepositTab({ pool }: { pool: Pool }) {
     address: ORLANCE_DEPLOYMENT.addresses.stEth,
     functionName: "allowance",
     args: [address ?? ORLANCE_DEPLOYMENT.addresses.vault, ORLANCE_DEPLOYMENT.addresses.vault],
-    query: { enabled: selectedToken === "stETH" && Boolean(address) },
+    query: { enabled: Boolean(address) && selectedToken === "stETH" },
   });
 
   const approveWrite = useWriteContract();
@@ -69,19 +76,20 @@ export default function DepositTab({ pool }: { pool: Pool }) {
         abi: routerAbi,
         address: ORLANCE_DEPLOYMENT.addresses.router,
         functionName: "zapDeposit",
-        args: [BigInt(ORLANCE_DEPLOYMENT.maturityTimestamp)],
+        args: [BigInt(pool.maturityTimestamp)],
         value: parsedAmount,
         chainId: ORLANCE_DEPLOYMENT.chainId,
       });
-    } else {
-      await depositWrite.writeContractAsync({
-        abi: vaultAbi,
-        address: ORLANCE_DEPLOYMENT.addresses.vault,
-        functionName: "deposit",
-        args: [BigInt(ORLANCE_DEPLOYMENT.maturityTimestamp), parsedAmount],
-        chainId: ORLANCE_DEPLOYMENT.chainId,
-      });
+      return;
     }
+
+    await depositWrite.writeContractAsync({
+      abi: vaultAbi,
+      address: ORLANCE_DEPLOYMENT.addresses.vault,
+      functionName: "deposit",
+      args: [BigInt(pool.maturityTimestamp), parsedAmount],
+      chainId: ORLANCE_DEPLOYMENT.chainId,
+    });
   };
 
   const isBusy =
@@ -133,7 +141,7 @@ export default function DepositTab({ pool }: { pool: Pool }) {
           Receive 1 TPS + 1 TYS per 1 stETH deposited into maturity pool.
         </p>
         <p className="text-gray-500">Maturity: {pool.maturity}</p>
-        {selectedToken === "stETH" && needsApproval && (
+        {needsApproval && (
           <div className="flex justify-center">
             <ApproveButton
               approved={false}

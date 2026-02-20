@@ -19,11 +19,27 @@ import {
 
 const secondsInYear = 365 * 24 * 60 * 60;
 
-export function useOrlancePoolData() {
+interface UseOrlancePoolDataOptions {
+  maturityTimestamp?: number;
+  addresses?: {
+    tps?: Address;
+    tys?: Address;
+    amm?: Address;
+  };
+}
+
+export function useOrlancePoolData(options: UseOrlancePoolDataOptions = {}) {
   const { address, isConnected } = useAccount();
   const publicClient = usePublicClient({ chainId: ORLANCE_DEPLOYMENT.chainId });
+  const maturityTimestamp = options.maturityTimestamp ?? ORLANCE_DEPLOYMENT.maturityTimestamp;
+  const stEthAddress = ORLANCE_DEPLOYMENT.addresses.stEth;
+  const vaultAddress = ORLANCE_DEPLOYMENT.addresses.vault;
+  const tpsAddress = options.addresses?.tps ?? ORLANCE_DEPLOYMENT.addresses.tps;
+  const tysAddress = options.addresses?.tys ?? ORLANCE_DEPLOYMENT.addresses.tys;
+  const ammAddress = options.addresses?.amm ?? ORLANCE_DEPLOYMENT.addresses.amm;
+  const isAmmConfigured = ammAddress.toLowerCase() !== zeroAddress.toLowerCase();
   const userAddress = address ?? zeroAddress;
-  const maturityBigInt = BigInt(ORLANCE_DEPLOYMENT.maturityTimestamp || 0);
+  const maturityBigInt = BigInt(maturityTimestamp || 0);
 
   const ethBalanceQuery = useBalance({
     address: address,
@@ -35,68 +51,68 @@ export function useOrlancePoolData() {
     allowFailure: true,
     contracts: [
       {
-        address: ORLANCE_DEPLOYMENT.addresses.stEth,
+        address: stEthAddress,
         abi: erc20Abi,
         functionName: "balanceOf",
-        args: [ORLANCE_DEPLOYMENT.addresses.vault],
+        args: [vaultAddress],
       },
       {
-        address: ORLANCE_DEPLOYMENT.addresses.stEth,
-        abi: erc20Abi,
-        functionName: "balanceOf",
-        args: [userAddress],
-      },
-      {
-        address: ORLANCE_DEPLOYMENT.addresses.tps,
+        address: stEthAddress,
         abi: erc20Abi,
         functionName: "balanceOf",
         args: [userAddress],
       },
       {
-        address: ORLANCE_DEPLOYMENT.addresses.tys,
+        address: tpsAddress,
         abi: erc20Abi,
         functionName: "balanceOf",
         args: [userAddress],
       },
       {
-        address: ORLANCE_DEPLOYMENT.addresses.amm,
+        address: tysAddress,
         abi: erc20Abi,
         functionName: "balanceOf",
         args: [userAddress],
       },
       {
-        address: ORLANCE_DEPLOYMENT.addresses.vault,
+        address: ammAddress,
+        abi: erc20Abi,
+        functionName: "balanceOf",
+        args: [userAddress],
+      },
+      {
+        address: vaultAddress,
         abi: vaultAbi,
         functionName: "pendingYield",
         args: [maturityBigInt, userAddress],
       },
       {
-        address: ORLANCE_DEPLOYMENT.addresses.vault,
+        address: vaultAddress,
         abi: vaultAbi,
         functionName: "storedBalance",
       },
       {
-        address: ORLANCE_DEPLOYMENT.addresses.amm,
+        address: ammAddress,
         abi: ammAbi,
         functionName: "reserve0",
       },
       {
-        address: ORLANCE_DEPLOYMENT.addresses.amm,
+        address: ammAddress,
         abi: ammAbi,
         functionName: "reserve1",
       },
       {
-        address: ORLANCE_DEPLOYMENT.addresses.tps,
+        address: tpsAddress,
         abi: erc20Abi,
         functionName: "totalSupply",
       },
       {
-        address: ORLANCE_DEPLOYMENT.addresses.tys,
+        address: tysAddress,
         abi: erc20Abi,
         functionName: "totalSupply",
       },
       {
-        address: ORLANCE_DEPLOYMENT.addresses.amm,
+        address: ammAddress,
         abi: erc20Abi,
         functionName: "totalSupply",
       },
@@ -110,11 +126,11 @@ export function useOrlancePoolData() {
     queryKey: [
       "orlance-swap-volume-24h",
       ORLANCE_DEPLOYMENT.chainId,
-      ORLANCE_DEPLOYMENT.addresses.amm,
+      ammAddress,
     ],
     enabled:
       Boolean(publicClient) &&
-      ORLANCE_DEPLOYMENT.addresses.amm.toLowerCase() !== zeroAddress.toLowerCase(),
+      isAmmConfigured,
     queryFn: async () => {
       if (!publicClient) {
         return { stEthIn24h: 0, tpsIn24h: 0, swapCount24h: 0 };
@@ -125,7 +141,7 @@ export function useOrlancePoolData() {
       );
 
       const logs = await publicClient.getLogs({
-        address: ORLANCE_DEPLOYMENT.addresses.amm,
+        address: ammAddress,
         event: swapEvent,
         fromBlock: 0n,
         toBlock: "latest",
@@ -170,13 +186,13 @@ export function useOrlancePoolData() {
         const amountIn = typeof log.args.amountIn === "bigint" ? log.args.amountIn : 0n;
         const amountInEther = toEtherNumber(amountIn);
 
-        if (tokenIn === ORLANCE_DEPLOYMENT.addresses.stEth.toLowerCase()) {
+        if (tokenIn === stEthAddress.toLowerCase()) {
           stEthIn24h += amountInEther;
           swapCount24h += 1;
           continue;
         }
 
-        if (tokenIn === ORLANCE_DEPLOYMENT.addresses.tps.toLowerCase()) {
+        if (tokenIn === tpsAddress.toLowerCase()) {
           tpsIn24h += amountInEther;
           swapCount24h += 1;
         }
@@ -223,7 +239,7 @@ export function useOrlancePoolData() {
 
   const derived = useMemo(() => {
     const nowTs = Math.floor(Date.now() / 1000);
-    const maturityTs = ORLANCE_DEPLOYMENT.maturityTimestamp || nowTs;
+    const maturityTs = maturityTimestamp || nowTs;
     const timeToMaturitySeconds = Math.max(maturityTs - nowTs, 1);
     const yearsToMaturity = timeToMaturitySeconds / secondsInYear;
 
@@ -233,7 +249,6 @@ export function useOrlancePoolData() {
 
     const walletTps = toEtherNumber(readValues.walletTpsBalance);
     const walletTys = toEtherNumber(readValues.walletTysBalance);
-    const walletStEth = toEtherNumber(readValues.walletStEthBalance);
     const walletLp = toEtherNumber(readValues.walletLpBalance);
     const pendingYield = toEtherNumber(readValues.pendingYield);
 
@@ -253,7 +268,6 @@ export function useOrlancePoolData() {
     const lpAprFeeBased = ammTvlStEth > 0 ? clampApr((fees24hStEth * 365 * 100) / ammTvlStEth) : 0;
 
     const positionStEth =
-      walletStEth +
       walletTps * tpsPriceInStEth +
       walletTys * tysPriceInStEth +
       walletLp * lpTokenPriceInStEth +
@@ -272,7 +286,7 @@ export function useOrlancePoolData() {
       positionStEth,
       yearsToMaturity,
     };
-  }, [readValues, swapVolumeQuery.data]);
+  }, [maturityTimestamp, readValues, swapVolumeQuery.data]);
 
   return {
     isConnected,
@@ -287,7 +301,7 @@ export function useOrlancePoolData() {
       ]);
     },
     chainId: ORLANCE_DEPLOYMENT.chainId,
-    maturityTimestamp: ORLANCE_DEPLOYMENT.maturityTimestamp,
+    maturityTimestamp,
     balances: {
       eth: ethBalanceQuery.data?.value ?? 0n,
       stEth: readValues.walletStEthBalance,

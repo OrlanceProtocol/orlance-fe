@@ -3,7 +3,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { Pool } from "@/data/pools";
-import { ORLANCE_DEPLOYMENT } from "@/lib/orlance/contracts";
 
 interface PoolInfoBarProps {
   pool: Pool;
@@ -49,7 +48,7 @@ export default function PoolInfoBar({
           />
 
           <span className="text-lg font-semibold text-white">
-            {ORLANCE_DEPLOYMENT.poolName} ({pool.asset} via {pool.protocol})
+            {pool.name} ({pool.asset} via {pool.protocol})
           </span>
 
           <span className="text-base text-gray-500">-</span>

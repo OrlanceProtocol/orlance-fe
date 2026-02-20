@@ -7,7 +7,14 @@ import { useOrlancePoolData } from "@/hooks/useOrlancePoolData";
 
 export default function WithdrawTab({ pool }: { pool: Pool }) {
   const { address } = useAccount();
-  const onchain = useOrlancePoolData();
+  const onchain = useOrlancePoolData({
+    maturityTimestamp: pool.maturityTimestamp,
+    addresses: {
+      tps: pool.addresses.tps,
+      tys: pool.addresses.tys,
+      amm: pool.addresses.amm,
+    },
+  });
 
   const redeemAllWrite = useWriteContract();
   const claimWrite = useWriteContract();
@@ -20,7 +27,7 @@ export default function WithdrawTab({ pool }: { pool: Pool }) {
       abi: routerAbi,
       address: ORLANCE_DEPLOYMENT.addresses.router,
       functionName: "zapRedeem",
-      args: [BigInt(ORLANCE_DEPLOYMENT.maturityTimestamp), onchain.balances.tps],
+      args: [BigInt(pool.maturityTimestamp), onchain.balances.tps],
       chainId: ORLANCE_DEPLOYMENT.chainId,
     });
   };
@@ -31,7 +38,7 @@ export default function WithdrawTab({ pool }: { pool: Pool }) {
       abi: vaultAbi,
       address: ORLANCE_DEPLOYMENT.addresses.vault,
       functionName: "claimYield",
-      args: [BigInt(ORLANCE_DEPLOYMENT.maturityTimestamp)],
+      args: [BigInt(pool.maturityTimestamp)],
       chainId: ORLANCE_DEPLOYMENT.chainId,
     });
   };

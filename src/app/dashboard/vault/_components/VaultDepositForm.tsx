@@ -13,7 +13,7 @@ import ExecuteButton from "@/app/dashboard/pool/[id]/_components/ExecuteButton";
 import ApproveButton from "@/app/dashboard/pool/[id]/_components/ApproveButton";
 import {
   erc20Abi,
-  autoRollerVaultAbi,
+  autoRollerAbi,
   ORLANCE_DEPLOYMENT,
 } from "@/lib/orlance/contracts";
 import type { useAutoRollerVault } from "@/hooks/useAutoRollerVault";
@@ -22,7 +22,6 @@ type VaultData = ReturnType<typeof useAutoRollerVault>;
 
 export default function VaultDepositForm({ data }: { data: VaultData }) {
   const [amount, setAmount] = useState("");
-  const [selectedToken, setSelectedToken] = useState<"ETH" | "stETH">("stETH");
   const { address } = useAccount();
 
   const parsedAmount = useMemo(() => {
@@ -38,10 +37,7 @@ export default function VaultDepositForm({ data }: { data: VaultData }) {
   const approveReceipt = useWaitForTransactionReceipt({ hash: approveWrite.data });
   const depositReceipt = useWaitForTransactionReceipt({ hash: depositWrite.data });
 
-  const needsApproval =
-    selectedToken === "stETH" &&
-    parsedAmount > 0n &&
-    data.balances.stEthAllowance < parsedAmount;
+  const needsApproval = parsedAmount > 0n && data.balances.stEthAllowance < parsedAmount;
 
   const handleApprove = async () => {
     if (!address || parsedAmount <= 0n) return;
@@ -49,7 +45,7 @@ export default function VaultDepositForm({ data }: { data: VaultData }) {
       abi: erc20Abi,
       address: ORLANCE_DEPLOYMENT.addresses.stEth,
       functionName: "approve",
-      args: [ORLANCE_DEPLOYMENT.addresses.autoRollerVault, parsedAmount],
+      args: [ORLANCE_DEPLOYMENT.addresses.autoRoller, parsedAmount],
       chainId: ORLANCE_DEPLOYMENT.chainId,
     });
   };
@@ -57,10 +53,10 @@ export default function VaultDepositForm({ data }: { data: VaultData }) {
   const handleDeposit = async () => {
     if (!address || parsedAmount <= 0n) return;
     await depositWrite.writeContractAsync({
-      abi: autoRollerVaultAbi,
-      address: ORLANCE_DEPLOYMENT.addresses.autoRollerVault,
+      abi: autoRollerAbi,
+      address: ORLANCE_DEPLOYMENT.addresses.autoRoller,
       functionName: "deposit",
-      args: [parsedAmount, address],
+      args: [parsedAmount],
       chainId: ORLANCE_DEPLOYMENT.chainId,
     });
   };
@@ -77,21 +73,27 @@ export default function VaultDepositForm({ data }: { data: VaultData }) {
         <SectionHeader title="Deposit stETH" />
         <div className="rounded-xl border border-gray-700/30 p-5 bg-[#151f2e]">
           <TokenInput
-            selectedToken={selectedToken}
-            onSelectToken={setSelectedToken}
+            selectedToken="stETH"
+            onSelectToken={() => {}}
             amount={amount}
             onAmountChange={setAmount}
             balance={data.formatted.stEth}
+            tokenLocked
           />
         </div>
       </div>
 
       <div className="mb-4 space-y-2 text-sm">
         <p className="text-gray-400">
-          Deposit stETH to receive OstETH. Yield is automatically
+          Deposit stETH to receive OAS. Yield is automatically
           compounded every roll-over period.
         </p>
-        {selectedToken === "stETH" && needsApproval && (
+        {!data.isConfigured && (
+          <p className="text-yellow-300 text-center">
+            Auto-Roller address is not configured in env.
+          </p>
+        )}
+        {needsApproval && (
           <div className="flex justify-center">
             <ApproveButton
               approved={false}
@@ -101,11 +103,6 @@ export default function VaultDepositForm({ data }: { data: VaultData }) {
               }}
             />
           </div>
-        )}
-        {selectedToken === "ETH" && (
-          <p className="text-gray-500 text-center">
-            Please swap ETH to stETH first — the vault accepts stETH only.
-          </p>
         )}
         {approveWrite.error && (
           <p className="text-red-400 text-center">{approveWrite.error.message}</p>
@@ -120,7 +117,7 @@ export default function VaultDepositForm({ data }: { data: VaultData }) {
           Boolean(address) &&
           parsedAmount > 0n &&
           !needsApproval &&
-          selectedToken === "stETH"
+          data.isConfigured
         }
         pending={isBusy}
         fullWidth
@@ -133,3 +130,4 @@ export default function VaultDepositForm({ data }: { data: VaultData }) {
     </>
   );
 }
+
