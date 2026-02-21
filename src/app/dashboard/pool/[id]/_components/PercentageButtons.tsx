@@ -19,7 +19,7 @@ export default function PercentageButtons({
   const [selectedPercent, setSelectedPercent] = useState<number | null>(null);
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2 flex-wrap">
       <span className="text-sm text-gray-400 w-16 shrink-0">Amount</span>
       <input
         type="number"
@@ -29,7 +29,7 @@ export default function PercentageButtons({
           onAmountChange(e.target.value);
         }}
         placeholder="0.00"
-        className="w-40 px-4 py-2 rounded-lg border border-gray-700/30 bg-[#151f2e] text-base text-white shadow-sm focus:outline-none focus:border-teal-400 focus:ring-1 focus:ring-teal-400 placeholder-gray-500"
+        className="w-full sm:w-40 px-4 py-2 rounded-lg border border-gray-700/30 bg-[#151f2e] text-base text-white shadow-sm focus:outline-none focus:border-teal-400 focus:ring-1 focus:ring-teal-400 placeholder-gray-500"
       />
       {PERCENTAGES.map((p) => (
         <button

@@ -117,7 +117,7 @@ export default function PoolTable() {
 
   return (
     <div className="bg-[#111827]/80 rounded-xl border border-gray-800 backdrop-blur-sm flex-1">
-      <div className="flex items-center justify-between px-8 pt-5 pb-4">
+      <div className="flex items-center justify-between px-4 md:px-8 pt-5 pb-4 flex-wrap gap-3">
         <h2 className="text-xl font-semibold text-white">Available Pools</h2>
         <div className="flex items-center gap-3">
           <button
@@ -140,10 +140,11 @@ export default function PoolTable() {
       {faucetWrite.error && (
         <p className="px-8 pb-2 text-sm text-red-400">{faucetWrite.error.message}</p>
       )}
-      <div className="mx-6 border-t border-gray-700" />
+      <div className="mx-4 md:mx-6 border-t border-gray-700" />
 
+      <div className="overflow-x-auto">
       <div
-        className="grid border-b border-gray-800 px-6"
+        className="grid border-b border-gray-800 px-4 md:px-6 min-w-[800px]"
         style={{ gridTemplateColumns: GRID_COLS.join(" ") }}
       >
         {COLUMNS.map((column) => (
@@ -156,7 +157,7 @@ export default function PoolTable() {
         ))}
       </div>
 
-      <div className="px-6 py-4">
+      <div className="px-4 md:px-6 py-4 min-w-[800px]">
         <PoolSummaryRow
           asset="ETH"
           maturityRange={maturityRange}
@@ -168,6 +169,7 @@ export default function PoolTable() {
           availableStEth={availableDepositStEth.toFixed(4)}
           pools={stEthPoolRows}
         />
+      </div>
       </div>
     </div>
   );

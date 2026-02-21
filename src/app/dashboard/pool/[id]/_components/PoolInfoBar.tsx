@@ -17,8 +17,8 @@ export default function PoolInfoBar({
 }: PoolInfoBarProps) {
   return (
     <div className="bg-[#111827]/80 rounded-xl border border-gray-700/30 px-6 py-4 space-y-3 backdrop-blur-sm">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
+      <div className="flex items-center justify-between flex-wrap gap-3">
+        <div className="flex items-center gap-3 md:gap-4 flex-wrap">
           <Link
             href="/dashboard"
             className="text-gray-400 hover:text-white transition-colors"
@@ -78,7 +78,7 @@ export default function PoolInfoBar({
       </div>
 
       {advanced && (
-        <div className="flex items-center gap-4 text-sm text-gray-400 border-t border-gray-700/30 pt-3">
+        <div className="flex items-center gap-4 text-sm text-gray-400 border-t border-gray-700/30 pt-3 flex-wrap">
           <span className="font-semibold text-gray-300">Fees:</span>
           <span>Deposit 0%</span>
           <span>Redemption 0%</span>

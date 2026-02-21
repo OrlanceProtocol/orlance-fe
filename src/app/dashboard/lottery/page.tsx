@@ -9,7 +9,7 @@ export default function LotteryPage() {
       <div className="absolute top-0 -left-16 w-[620px] h-[620px] bg-teal-500/10 rounded-full blur-[140px]" />
       <div className="absolute -bottom-20 -right-16 w-[640px] h-[640px] bg-cyan-500/10 rounded-full blur-[140px]" />
 
-      <main className="relative mx-auto px-30 py-10 flex flex-col min-h-screen">
+      <main className="relative mx-auto px-4 md:px-8 lg:px-30 py-6 md:py-10 flex flex-col min-h-screen">
         <Header />
         <LotteryContent />
       </main>

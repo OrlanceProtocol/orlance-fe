@@ -100,7 +100,7 @@ export default function SwapTab({ pool }: { pool: Pool }) {
       <div className="mb-6">
         <SectionHeader title="From" withDivider />
         <div className="rounded-xl border border-gray-700/30 p-5 bg-[#151f2e] space-y-4">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <span className="text-sm text-gray-400 w-16 shrink-0">Token</span>
             <button
               onClick={() =>
@@ -118,14 +118,14 @@ export default function SwapTab({ pool }: { pool: Pool }) {
             <span className="text-sm text-gray-500">Balance: {maxBalance}</span>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <span className="text-sm text-gray-400 w-16 shrink-0">Amount</span>
             <input
               type="number"
               value={swapAmount}
               onChange={(event) => setSwapAmount(event.target.value)}
               placeholder="0.00"
-              className="w-48 px-4 py-2 rounded-lg border border-gray-700/30 bg-[#151f2e] text-base text-white shadow-sm focus:outline-none focus:border-teal-400 focus:ring-1 focus:ring-teal-400 placeholder-gray-500"
+              className="w-full sm:w-48 px-4 py-2 rounded-lg border border-gray-700/30 bg-[#151f2e] text-base text-white shadow-sm focus:outline-none focus:border-teal-400 focus:ring-1 focus:ring-teal-400 placeholder-gray-500"
             />
           </div>
         </div>

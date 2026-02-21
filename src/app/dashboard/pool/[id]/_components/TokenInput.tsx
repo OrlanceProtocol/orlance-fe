@@ -32,7 +32,7 @@ export default function TokenInput({
   return (
     <div className="space-y-4">
       {/* Token selector + Balance */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 flex-wrap">
         <span className="text-sm text-gray-400 w-16 shrink-0">Token</span>
         <button
           onClick={() => {
@@ -61,10 +61,10 @@ export default function TokenInput({
       </div>
 
       {/* Amount input + percentage buttons */}
-      <div className="flex items-start gap-2">
+      <div className="flex items-start gap-2 flex-wrap">
         <span className="text-sm text-gray-400 w-16 shrink-0 mt-2.5">Amount</span>
-        <div className="flex-1">
-          <div className="flex items-center gap-2">
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 flex-wrap">
             <input
               type="number"
               value={amount}
@@ -73,7 +73,7 @@ export default function TokenInput({
                 onAmountChange(e.target.value);
               }}
               placeholder="0.00"
-              className="w-60 px-4 py-2 rounded-lg border border-gray-700/30 bg-[#151f2e] text-base text-white shadow-sm focus:outline-none focus:border-teal-400 focus:ring-1 focus:ring-teal-400 placeholder-gray-500"
+              className="w-full sm:w-60 px-4 py-2 rounded-lg border border-gray-700/30 bg-[#151f2e] text-base text-white shadow-sm focus:outline-none focus:border-teal-400 focus:ring-1 focus:ring-teal-400 placeholder-gray-500"
             />
             {percentages.map((p) => (
               <button

@@ -23,13 +23,13 @@ export default async function ManagePoolPage({ params }: Props) {
       {/* Bottom-right glow */}
       <div className="absolute -bottom-32 -right-32 w-[700px] h-[700px] rounded-full bg-teal-500/20 blur-[150px] pointer-events-none" />
 
-      <main className="relative mx-auto px-30 py-10 flex flex-col min-h-screen">
+      <main className="relative mx-auto px-4 md:px-8 lg:px-30 py-6 md:py-10 flex flex-col min-h-screen">
         <Header />
-        <div className="grid grid-cols-5 gap-6 mt-6 flex-1">
-          <div className="col-span-3">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mt-6 flex-1">
+          <div className="md:col-span-3">
             <PoolContent pool={pool} />
           </div>
-          <div className="col-span-2">
+          <div className="md:col-span-2">
             <Sidebar pool={pool} />
           </div>
         </div>

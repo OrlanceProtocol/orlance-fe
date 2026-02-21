@@ -16,12 +16,12 @@ export default function VaultContent() {
   return (
     <>
       {/* Stats Bar - full width above the grid */}
-      <div className="col-span-5 mb-2">
+      <div className="md:col-span-5 mb-2">
         <VaultStatsBar data={data} />
       </div>
 
       {/* Main content - 3 cols */}
-      <div className="col-span-3">
+      <div className="md:col-span-3">
         <div className="bg-[#111827]/80 rounded-xl border border-gray-700/30 p-6 h-full backdrop-blur-sm">
           {/* Tab switcher */}
           <div className="flex justify-center border-b border-gray-700/30 mb-6">
@@ -49,7 +49,7 @@ export default function VaultContent() {
       </div>
 
       {/* Sidebar - 2 cols */}
-      <div className="col-span-2">
+      <div className="md:col-span-2">
         <VaultPositionCard data={data} />
       </div>
     </>

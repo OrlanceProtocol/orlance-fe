@@ -127,8 +127,8 @@ export default function LotteryContent() {
   };
 
   return (
-    <div className="grid grid-cols-5 gap-6 mt-6 flex-1">
-      <section className="col-span-5 rounded-2xl border border-teal-500/25 bg-gradient-to-r from-[#102437] to-[#111827] p-6">
+    <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mt-6 flex-1">
+      <section className="md:col-span-5 rounded-2xl border border-teal-500/25 bg-gradient-to-r from-[#102437] to-[#111827] p-6">
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div>
             <h1 className="text-3xl font-semibold text-white">No-Loss Yield Lottery</h1>
@@ -144,7 +144,7 @@ export default function LotteryContent() {
         </div>
       </section>
 
-      <section className="col-span-3 rounded-xl border border-gray-700/30 bg-[#111827]/80 p-6 backdrop-blur-sm">
+      <section className="md:col-span-3 rounded-xl border border-gray-700/30 bg-[#111827]/80 p-6 backdrop-blur-sm">
         <div className="flex items-center justify-between gap-4 flex-wrap">
           <h2 className="text-xl font-semibold text-white">Current Weekly Round</h2>
           <span
@@ -158,7 +158,7 @@ export default function LotteryContent() {
           </span>
         </div>
 
-        <div className="mt-5 grid grid-cols-3 gap-4">
+        <div className="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-4">
           <StatCard label="Total Deposits" value={`${data.formatted.totalDeposits} stETH`} />
           <StatCard label="Live Prize Pool" value={`${data.formatted.livePrizePool} stETH`} tone="teal" />
           <StatCard label="Participants" value={`${data.state.participantCount}`} />
@@ -193,7 +193,7 @@ export default function LotteryContent() {
         </div>
       </section>
 
-      <section className="col-span-2 rounded-xl border border-gray-700/30 bg-[#111827]/80 p-6 backdrop-blur-sm">
+      <section className="md:col-span-2 rounded-xl border border-gray-700/30 bg-[#111827]/80 p-6 backdrop-blur-sm">
         <h2 className="text-xl font-semibold text-white">My Lottery Position</h2>
         <p className="mt-2 text-sm text-gray-400">
           stETH only. Deposit mints TPS and enters your tickets for this round.
@@ -250,7 +250,7 @@ export default function LotteryContent() {
         {depositWrite.error && <p className="mt-2 text-xs text-red-400">{depositWrite.error.message}</p>}
       </section>
 
-      <section className="col-span-5 rounded-xl border border-gray-700/30 bg-[#111827]/80 p-6 backdrop-blur-sm">
+      <section className="md:col-span-5 rounded-xl border border-gray-700/30 bg-[#111827]/80 p-6 backdrop-blur-sm">
         <div className="flex items-center justify-between gap-3 flex-wrap">
           <h2 className="text-xl font-semibold text-white">Recent Winners</h2>
           <p className="text-sm text-gray-400">Derived from on-chain WinnerDrawn events</p>
