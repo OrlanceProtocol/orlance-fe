@@ -194,26 +194,8 @@ function WhyOrlanceSection() {
             </div>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-5">
-            {/* Left — Dither background card */}
-            <div className="border border-white/[0.08] overflow-hidden relative min-h-[480px]">
-              <div className="absolute inset-0">
-                <DitherBackground />
-              </div>
-              <div className="relative z-10 flex flex-col items-center justify-center h-full p-8">
-                <div className="w-16 h-16 rounded-2xl bg-black/60 backdrop-blur-sm border border-white/10 flex items-center justify-center mb-4">
-                  <svg width="32" height="32" viewBox="0 0 32 32" fill="none" className="text-teal-400">
-                    <path d="M6 10 L16 4 L26 10 L26 22 L16 28 L6 22Z" stroke="currentColor" strokeWidth="2" fill="none" />
-                    <path d="M6 16 L16 10 L26 16" stroke="currentColor" strokeWidth="2" fill="none" />
-                  </svg>
-                </div>
-                <span className="text-white font-bold text-lg tracking-tight">Dashboard</span>
-              </div>
-            </div>
-
-            {/* Right — 4 feature cards stacked with sweep animation */}
-            <AnimatedFeatureCards features={features} />
-          </div>
+          {/* Left panel + right feature cards (combined client component) */}
+          <AnimatedFeatureCards features={features} />
         </div>
       </div>
     </section>
