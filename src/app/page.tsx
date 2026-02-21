@@ -29,12 +29,6 @@ function LandingNav() {
     <nav className="flex items-center justify-between px-8 py-5 bg-black/30 backdrop-blur-xl border-b border-white/5">
       <OrlanceLogo />
       <div className="flex items-center gap-6">
-        <Link
-          href="/dashboard"
-          className="px-5 py-2 rounded-full bg-teal-500 hover:bg-teal-400 text-white text-sm font-medium transition-all hover:shadow-md hover:shadow-teal-500/30"
-        >
-          Launch App →
-        </Link>
       </div>
     </nav>
     </ScrollNav>
@@ -46,79 +40,47 @@ function LandingNav() {
 ───────────────────────────────────────────────────────────── */
 function HeroSection() {
   return (
-    <section className="relative h-screen flex items-center justify-center overflow-hidden">
-      {/* Dither animated background */}
-      <div className="absolute inset-0">
-        <DitherBackground />
-      </div>
+    <section className="relative h-screen bg-black overflow-hidden" style={{ fontFamily: "'Satoshi', sans-serif" }}>
+      <div className="max-w-6xl mx-auto px-6 w-full h-full pt-24 pb-8">
+        <div className="flex flex-col gap-12 h-full">
+          {/* Top — Headline + buttons */}
+          <div>
+            <h1 className="text-5xl md:text-7xl font-black text-white uppercase leading-[0.95] tracking-tight mb-10">
+              SPLIT YOUR YIELD. MAXIMIZE RETURNS.
+            </h1>
 
-      {/* Dark overlay so text is readable */}
-      <div className="absolute inset-0 bg-black/72" />
+            <p className="text-xs md:text-sm text-gray-400 uppercase tracking-widest mb-8">
+              FIXED AND VARIABLE YIELD FROM A SINGLE DEPOSIT, TRUSTLESSLY ON ARBITRUM.
+            </p>
 
-      {/* Hero content */}
-      <div className="relative z-10 text-center max-w-4xl px-6 mx-auto">
-        {/* Status badge */}
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-400 text-sm mb-8">
-          <span className="w-2 h-2 rounded-full bg-teal-400 animate-pulse" />
-          Built on Arbitrum · Trustless · Non-custodial
-        </div>
-
-        {/* Headline */}
-        <h1 className="text-6xl md:text-7xl font-bold text-white tracking-tight leading-none mb-6">
-          Fixed Income<br />
-          <span className="text-teal-400">for DeFi.</span>
-        </h1>
-
-        {/* Subtitle */}
-        <p className="text-lg md:text-xl text-gray-300 leading-relaxed mb-10 max-w-2xl mx-auto">
-          Strip yield-bearing assets into Principal and Yield Tokens.
-          Earn fixed returns or take leveraged yield exposure — trustlessly, on Arbitrum.
-        </p>
-
-        {/* CTAs */}
-        <div className="flex items-center justify-center gap-4 flex-wrap">
-          <Link
-            href="/dashboard"
-            className="px-8 py-3.5 rounded-full bg-teal-500 hover:bg-teal-400 text-white font-medium text-base transition-all hover:shadow-lg hover:shadow-teal-500/25"
-          >
-            Launch App →
-          </Link>
-          <a
-            href="#how-it-works"
-            className="px-8 py-3.5 rounded-full border border-white/20 text-white font-medium text-base hover:bg-white/5 transition-colors"
-          >
-            How it works
-          </a>
-        </div>
-
-        {/* Stats row */}
-        <div className="flex items-center justify-center gap-12 mt-16 flex-wrap">
-          {[
-            { label: "Total Value Locked", value: "Live on Testnet" },
-            { label: "Active Pools", value: "3" },
-            { label: "Network", value: "Arbitrum" },
-          ].map((stat) => (
-            <div key={stat.label} className="text-center">
-              <div className="text-2xl font-bold text-white">{stat.value}</div>
-              <div className="text-sm text-gray-400 mt-1">{stat.label}</div>
+            <div className="flex items-stretch gap-4">
+              <Link
+                href="/dashboard"
+                className="group flex items-stretch bg-teal-500 hover:bg-teal-400 transition-colors"
+              >
+                <span className="flex items-center justify-center w-12 bg-black/30">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5">
+                    <path d="M7 17L17 7M17 7H7M17 7V17" />
+                  </svg>
+                </span>
+                <span className="flex items-center px-6 py-3.5 text-sm font-bold text-white uppercase tracking-wide">
+                  Launch App
+                </span>
+              </Link>
             </div>
-          ))}
-        </div>
-      </div>
+          </div>
 
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-        <svg
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          className="text-gray-500"
-        >
-          <path d="M12 5v14M5 12l7 7 7-7" />
-        </svg>
+          {/* Bottom — Dither card, fills remaining height */}
+          <div className="relative border border-white/[0.08] overflow-hidden flex-1 min-h-0">
+            <span className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-teal-400 z-10" />
+            <span className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-teal-400 z-10" />
+            <span className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-teal-400 z-10" />
+            <span className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-teal-400 z-10" />
+            <div className="absolute inset-0">
+              <DitherBackground />
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
