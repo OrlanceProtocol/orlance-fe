@@ -10,7 +10,12 @@ import ThreadsBackground from "./_components/ThreadsBackground";
 ───────────────────────────────────────────────────────────── */
 function OrlanceLogo() {
   return (
-    <img src="/icon/orlance-polos.png" alt="Orlance" className="h-8 w-auto" />
+    <div className="flex items-center gap-2">
+      <img src="/icon/orlance-polos.png" alt="Orlance" className="h-8 w-auto" />
+      <span className="text-white font-bold text-lg tracking-tight" style={{ fontFamily: "var(--font-orbitron)" }}>
+        Orlance
+      </span>
+    </div>
   );
 }
 
@@ -20,11 +25,11 @@ function OrlanceLogo() {
 function LandingNav() {
   return (
     <ScrollNav>
-    <nav className="flex items-center justify-between px-8 py-5 bg-black/30 backdrop-blur-xl border-b border-white/5">
-      <OrlanceLogo />
-      <div className="flex items-center gap-6">
-      </div>
-    </nav>
+      <nav className="flex items-center justify-between px-8 py-5 bg-black/30 backdrop-blur-xl border-b border-white/5">
+        <OrlanceLogo />
+        <div className="flex items-center gap-6">
+        </div>
+      </nav>
     </ScrollNav>
   );
 }
@@ -311,7 +316,7 @@ function Footer() {
               <h4 className="text-sm font-bold text-white mb-5">Community</h4>
               <ul className="space-y-4">
                 {[
-                  { label: "Twitter", href: "#" },
+                  { label: "X", href: "#" },
                   { label: "Discord", href: "#" },
                   { label: "Instagram", href: "#" },
                 ].map((link) => (
