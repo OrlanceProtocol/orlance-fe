@@ -3,6 +3,7 @@
 import { parseEther } from "viem";
 import { useAccount, useWaitForTransactionReceipt, useWriteContract } from "wagmi";
 import PoolSummaryRow from "./PoolSummaryRow";
+import PoolMobileCard from "./PoolMobileCard";
 import { pools } from "@/data/pools";
 import { useOrlancePoolData } from "@/hooks/useOrlancePoolData";
 import { mockLidoAbi, ORLANCE_DEPLOYMENT } from "@/lib/orlance/contracts";
@@ -94,6 +95,7 @@ export default function PoolTable() {
         id: pool.id,
         protocol: pool.protocol,
         maturity: pool.maturity,
+        maturityTimestamp: pool.maturityTimestamp,
         fixedAPR: Number(poolData.formatted.fixedApr) || 0,
         lpAPR: Number(poolData.formatted.lpApr) || 0,
         tvl: `${rowTvlStEth.toFixed(2)} stETH`,
@@ -142,34 +144,42 @@ export default function PoolTable() {
       )}
       <div className="mx-4 md:mx-6 border-t border-gray-700" />
 
-      <div className="overflow-x-auto">
-      <div
-        className="grid border-b border-gray-800 px-4 md:px-6 min-w-[800px]"
-        style={{ gridTemplateColumns: GRID_COLS.join(" ") }}
-      >
-        {COLUMNS.map((column) => (
-          <div
-            key={column.label}
-            className="py-4 px-2 text-sm font-medium text-gray-500 tracking-wide text-center"
-          >
-            {column.label}
-          </div>
+      {/* Mobile cards */}
+      <div className="md:hidden px-4 py-4 flex flex-col gap-3">
+        {stEthPoolRows.map((pool, i) => (
+          <PoolMobileCard key={i} pool={pool} />
         ))}
       </div>
 
-      <div className="px-4 md:px-6 py-4 min-w-[800px]">
-        <PoolSummaryRow
-          asset="ETH"
-          maturityRange={maturityRange}
-          maxFixedAPR={maxFixedApr}
-          maxLpAPR={maxLpApr}
-          totalTVL={`${totalTvlStEth.toFixed(2)} stETH`}
-          balance={primaryData.isConnected ? `${walletPositionStEth.toFixed(4)} stETH` : "0 stETH"}
-          availableEth={availableDepositEth.toFixed(4)}
-          availableStEth={availableDepositStEth.toFixed(4)}
-          pools={stEthPoolRows}
-        />
-      </div>
+      {/* Desktop table */}
+      <div className="hidden md:block overflow-x-auto">
+        <div
+          className="grid border-b border-gray-800 px-4 md:px-6 min-w-[800px]"
+          style={{ gridTemplateColumns: GRID_COLS.join(" ") }}
+        >
+          {COLUMNS.map((column) => (
+            <div
+              key={column.label}
+              className="py-4 px-2 text-sm font-medium text-gray-500 tracking-wide text-center"
+            >
+              {column.label}
+            </div>
+          ))}
+        </div>
+
+        <div className="px-4 md:px-6 py-4 min-w-[800px]">
+          <PoolSummaryRow
+            asset="ETH"
+            maturityRange={maturityRange}
+            maxFixedAPR={maxFixedApr}
+            maxLpAPR={maxLpApr}
+            totalTVL={`${totalTvlStEth.toFixed(2)} stETH`}
+            balance={primaryData.isConnected ? `${walletPositionStEth.toFixed(4)} stETH` : "0 stETH"}
+            availableEth={availableDepositEth.toFixed(4)}
+            availableStEth={availableDepositStEth.toFixed(4)}
+            pools={stEthPoolRows}
+          />
+        </div>
       </div>
     </div>
   );

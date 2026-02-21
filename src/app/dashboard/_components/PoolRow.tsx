@@ -6,6 +6,7 @@ export interface PoolRowData {
   id: string;
   protocol: string;
   maturity: string;
+  maturityTimestamp?: number;
   fixedAPR: number;
   lpAPR: number;
   tvl: string;

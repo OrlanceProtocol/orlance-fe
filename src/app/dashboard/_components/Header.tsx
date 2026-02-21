@@ -44,7 +44,13 @@ export default function Header() {
 
         {/* Right side */}
         <div className="flex items-center gap-3">
+          {/* Desktop connect button */}
           <div className="hidden sm:block">
+            <ConnectButton />
+          </div>
+
+          {/* Mobile connect button - left of hamburger */}
+          <div className="sm:hidden">
             <ConnectButton />
           </div>
 
@@ -84,11 +90,8 @@ export default function Header() {
               </Link>
             );
           })}
-          <div className="sm:hidden mt-2">
-            <ConnectButton />
-          </div>
         </div>
-      )}
+)}
     </div>
   );
 }
