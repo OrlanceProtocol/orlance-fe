@@ -17,31 +17,7 @@ export default function Header() {
     <div className="flex items-center justify-between mb-8">
       {/* Logo + Nav */}
       <div className="flex items-center gap-8">
-        <div className="flex items-center gap-3">
-          <svg
-            width="40"
-            height="40"
-            viewBox="0 0 32 32"
-            fill="none"
-            className="text-teal-400"
-          >
-            <path
-              d="M6 10 L16 4 L26 10 L26 22 L16 28 L6 22Z"
-              stroke="currentColor"
-              strokeWidth="2"
-              fill="none"
-            />
-            <path
-              d="M6 16 L16 10 L26 16"
-              stroke="currentColor"
-              strokeWidth="2"
-              fill="none"
-            />
-          </svg>
-          <span className="text-2xl font-bold text-white tracking-tight">
-            orlance
-          </span>
-        </div>
+        <img src="/icon/orlance-polos.png" alt="Orlance" className="h-8 w-auto" />
 
         <nav className="flex items-center gap-1">
           {NAV_ITEMS.map((item) => {

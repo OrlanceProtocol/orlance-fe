@@ -10,13 +10,7 @@ import ThreadsBackground from "./_components/ThreadsBackground";
 ───────────────────────────────────────────────────────────── */
 function OrlanceLogo() {
   return (
-    <div className="flex items-center gap-3">
-      <svg width="36" height="36" viewBox="0 0 32 32" fill="none" className="text-teal-400">
-        <path d="M6 10 L16 4 L26 10 L26 22 L16 28 L6 22Z" stroke="currentColor" strokeWidth="2" fill="none" />
-        <path d="M6 16 L16 10 L26 16" stroke="currentColor" strokeWidth="2" fill="none" />
-      </svg>
-      <span className="text-xl font-bold text-white tracking-tight">orlance</span>
-    </div>
+    <img src="/icon/orlance-polos.png" alt="Orlance" className="h-8 w-auto" />
   );
 }
 
