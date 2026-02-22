@@ -1,36 +1,186 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Orlance - Frontend
 
-## Getting Started
+![Next.js](https://img.shields.io/badge/Next.js-16-black)
+![React](https://img.shields.io/badge/React-19-blue)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4-38bdf8)
+![Network](https://img.shields.io/badge/Network-Arbitrum%20Sepolia-2d374b)
 
-First, run the development server:
+Modern frontend dashboard for the Orlance fixed-yield ecosystem.
+
+## Key Features
+
+### Pools
+
+- Multi-maturity pools (1M / 2M / 3M)
+- Deposit, mint, swap, pool, redeem, and withdraw flows
+- On-chain TVL per maturity (from TPS supply)
+- APR metrics derived from AMM reserves and swap activity
+
+### Auto-Roller Vault
+
+- OAS-based auto-roll strategy
+- On-chain next roll-over countdown
+- Deposit/withdraw UX with allowance handling
+
+### No-Loss Yield Lottery
+
+- stETH deposit with on-chain round data
+- Live participant and prize pool estimation
+- Winner history from on-chain `WinnerDrawn` events
+
+### Dashboard Experience
+
+- Unified pools summary with explorer-aware metrics
+- Wallet + faucet flow for testnet onboarding (`0.1 stETH` claim)
+- Etherscan-compatible tx history integration
+
+## Quick Start
+
+### Prerequisites
+
+- Node.js 18+
+- npm
+- Arbitrum Sepolia wallet for testing
+
+### Installation
+
+```bash
+# From workspace root
+cd orlance-fe
+
+# Install dependencies
+npm install
+
+# Create local env
+cp .env.example .env
+```
+
+Windows PowerShell:
+
+```powershell
+cd "orlance-fe"
+npm install
+Copy-Item .env.example .env
+```
+
+### Run Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Build for Production
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm start
+```
 
-## Learn More
+## Environment Configuration
 
-To learn more about Next.js, take a look at the following resources:
+Edit `.env` and provide values for:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+# Network
+NEXT_PUBLIC_CHAIN_ID=421614
+NEXT_PUBLIC_RPC_URL=https://sepolia-rollup.arbitrum.io/rpc
+NEXT_PUBLIC_EXPLORER_BASE_URL=https://sepolia.arbiscan.io
+NEXT_PUBLIC_EXPLORER_API_URL=https://api.etherscan.io/v2/api
+NEXT_PUBLIC_ETHERSCAN_API_KEY=YOUR_ARBISCAN_API_KEY
+NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=YOUR_WALLETCONNECT_PROJECT_ID
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Core contracts
+NEXT_PUBLIC_ORLANCE_MOCK_LIDO=0x...
+NEXT_PUBLIC_ORLANCE_VAULT=0x...
+NEXT_PUBLIC_ORLANCE_ROUTER=0x...
+NEXT_PUBLIC_ORLANCE_AUTO_ROLLER=0x...
+NEXT_PUBLIC_ORLANCE_LOTTERY=0x...
 
-## Deploy on Vercel
+# Pool 1..3
+NEXT_PUBLIC_ORLANCE_POOL_NAME_1=Orlance stETH 1M
+NEXT_PUBLIC_ORLANCE_POOL_NAME_2=Orlance stETH 2M
+NEXT_PUBLIC_ORLANCE_POOL_NAME_3=Orlance stETH 3M
+NEXT_PUBLIC_ORLANCE_MATURITY_TIMESTAMP_1=...
+NEXT_PUBLIC_ORLANCE_MATURITY_TIMESTAMP_2=...
+NEXT_PUBLIC_ORLANCE_MATURITY_TIMESTAMP_3=...
+NEXT_PUBLIC_ORLANCE_TPS_1=0x...
+NEXT_PUBLIC_ORLANCE_TPS_2=0x...
+NEXT_PUBLIC_ORLANCE_TPS_3=0x...
+NEXT_PUBLIC_ORLANCE_TYS_1=0x...
+NEXT_PUBLIC_ORLANCE_TYS_2=0x...
+NEXT_PUBLIC_ORLANCE_TYS_3=0x...
+NEXT_PUBLIC_ORLANCE_SIMPLE_AMM_1=0x...
+NEXT_PUBLIC_ORLANCE_SIMPLE_AMM_2=0x...
+NEXT_PUBLIC_ORLANCE_SIMPLE_AMM_3=0x...
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Legacy fallback keys are still supported (`NEXT_PUBLIC_ORLANCE_TPS`, `NEXT_PUBLIC_ORLANCE_TYS`, etc.).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Data and Calculations
+
+- Pools TVL: derived from on-chain TPS supply per maturity.
+- Fixed APR: derived from on-chain TPS/stETH AMM price.
+- LP APR: derived from on-chain AMM swap volume and 24h fee estimate.
+- Vault roll-over: uses on-chain `autoRoller.nextRollOver()`.
+- Lottery rounds: uses on-chain `currentRoundId`, `rounds`, `activeMaturity`.
+
+## Project Structure
+
+```text
+orlance-fe/
+├── src/
+│   ├── app/
+│   │   ├── dashboard/
+│   │   │   ├── page.tsx
+│   │   │   ├── pool/[id]/page.tsx
+│   │   │   ├── vault/page.tsx
+│   │   │   └── lottery/page.tsx
+│   ├── hooks/
+│   │   ├── useOrlancePoolData.ts
+│   │   ├── useAutoRollerVault.ts
+│   │   ├── useNoLossLottery.ts
+│   │   └── useExplorerTxHistory.ts
+│   ├── lib/orlance/contracts.ts
+│   └── data/pools.ts
+├── public/
+├── .env.example
+└── README.md
+```
+
+## Deployment Notes
+
+### Vercel
+
+- Deploy as a standard Next.js app.
+- Add all `NEXT_PUBLIC_*` env vars in the project settings.
+- Redeploy after updating contract addresses.
+
+### VPS / Self-hosted
+
+```bash
+npm install
+npm run build
+npm start
+```
+
+Use Nginx/Caddy as reverse proxy if needed.
+
+## Post-Deploy SC Sync
+
+After running `FullDeploy` in `orlance-sc`:
+
+1. Copy new addresses + maturities into `orlance-fe/.env`.
+2. Optionally update `orlance-fe/.env.example` reference values.
+3. Restart FE server (`npm run dev` or `npm start`).
+
+## Useful Commands
+
+```bash
+npm run dev
+npm run lint
+npm run build
+npm start
+```
